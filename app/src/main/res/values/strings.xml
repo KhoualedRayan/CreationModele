@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CreationModele</string>
+    <string name="CreationModele">Créer un modèle</string>
+    <string name="ReprendreModele">Reprendre un modèle</string>
+    <string name="CreerModele">Créer un nouveau modèle</string>
+    <string name="NomModele">Nom du modèle :</string>
+    <string name="nomModele">Entrez le nom de votre nouveau modèle ici.</string>
+    <string name="nouveauModeleWarning">ATTENTION !!\nLES DONNES NON SAUVEGARDEES DU MODELE\nACTUEL SERONT PERDUS !!</string>
+
+</resources>
