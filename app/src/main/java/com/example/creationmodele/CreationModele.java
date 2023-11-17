@@ -1,7 +1,9 @@
 package com.example.creationmodele;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,9 +25,18 @@ public class CreationModele extends AppCompatActivity {
 
     }
     public void CreerNouveeauModele(View view) {
-        Modele.getInstance().setNom(editText.getText().toString());
-        Log.i("CREATION_MODELE",editText.getText().toString());
-        Intent intent = new Intent(CreationModele.this,MainActivity.class);
-        startActivity(intent);
+        if(editText.getText().toString().getBytes().length != 0 || editText.getText().toString().endsWith(".")){
+            Modele.getInstance().setNom(editText.getText().toString());
+            Log.i("CREATION_MODELE",editText.getText().toString());
+            Intent intent = new Intent(CreationModele.this,MainActivity.class);
+            startActivity(intent);
+        }else {
+            new AlertDialog.Builder(this)
+                    .setTitle("Nom invalide")
+                    .setMessage("Ecrivez un nom valide :\nPas de '.' à la fin et mini 1 lettre.")
+                    .setNeutralButton("OK",null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 }
