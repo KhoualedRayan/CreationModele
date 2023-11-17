@@ -6,5 +6,8 @@
     <string name="NomModele">Nom du modèle :</string>
     <string name="nomModele">Entrez le nom de votre nouveau modèle ici.</string>
     <string name="nouveauModeleWarning">ATTENTION !!\nLES DONNES NON SAUVEGARDEES DU MODELE\nACTUEL SERONT PERDUS !!</string>
+    <string name="EditionModele">Editer le modèle actuel</string>
+    <string name="ModeleActuel">"Le modèle actuel est : "</string>
+    <string name="SauvergarderModele">Sauvegarder un modèle</string>
 
 </resources>

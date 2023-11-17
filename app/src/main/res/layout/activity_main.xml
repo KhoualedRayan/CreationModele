@@ -32,4 +32,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_creation_modele" />
 
+    <Button
+        android:id="@+id/button_edition_modele"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="159dp"
+        android:layout_marginBottom="241dp"
+        android:text="@string/EditionModele"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_charger_modele" />
+
+    <Button
+        android:id="@+id/button_sauvegarde_modele"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginEnd="159dp"
+        android:layout_marginBottom="147dp"
+        android:text="@string/SauvergarderModele"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="SauvegarderModele"
+        app:layout_constraintTop_toBottomOf="@+id/button_edition_modele" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
