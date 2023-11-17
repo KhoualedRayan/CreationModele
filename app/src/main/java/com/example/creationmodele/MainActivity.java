@@ -2,7 +2,9 @@ package com.example.creationmodele;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,32 +48,54 @@ public class MainActivity extends AppCompatActivity {
 
     public void SauvegarderModele(View view) {
         if(Modele.getInstance().getNom() != null) {
-            try {
-                Context context = this;
-                // Créer un objet ObjectMapper
-                ObjectMapper objectMapper = new ObjectMapper();
+            new AlertDialog.Builder(this)
+                    .setTitle("Sauvegarde du modèle")
+                    .setMessage("Voulez-vous sauvegarder le modèle en cours ?")
+                    .setPositiveButton("Sauvegarder", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            save();
+                        }
+                    })
 
-                // Convertir l'objet en format JSON
-                String json = objectMapper.writeValueAsString(Modele.getInstance());
+                    // A null listener allows the button to dismiss the dialog and take no further action.
+                    .setNegativeButton("Annuler", null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }else {
+            new AlertDialog.Builder(this)
+                    .setTitle("Impossible de sauvegarder")
+                    .setMessage("Veuillez charger ou créer un modèle avant de sauvegarder.")
+                    .setNeutralButton("OK",null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+    }
+    private void save(){
+        try {
+            Context context = this;
+            // Créer un objet ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
 
-                // Spécifier le nom du fichier
-                String nomFichier = Modele.getInstance().getNom() + ".json";
+            // Convertir l'objet en format JSON
+            String json = objectMapper.writeValueAsString(Modele.getInstance());
 
-                // Obtenir le répertoire de stockage interne de l'application
-                File repertoireInterne = context.getFilesDir();
+            // Spécifier le nom du fichier
+            String nomFichier = Modele.getInstance().getNom() + ".json";
 
-                // Créer un objet File pour le fichier de destination
-                File fichierDestination = new File(repertoireInterne, nomFichier);
+            // Obtenir le répertoire de stockage interne de l'application
+            File repertoireInterne = context.getFilesDir();
 
-                // Écrire le JSON dans le fichier de destination
-                try (FileOutputStream fos = new FileOutputStream(fichierDestination)) {
-                    fos.write(json.getBytes());
-                }
-                Log.i("MainACTIVITY : ", "Sauvegarde en JSON réussie dans : " + fichierDestination.getAbsolutePath());
+            // Créer un objet File pour le fichier de destination
+            File fichierDestination = new File(repertoireInterne, nomFichier);
 
-            } catch (IOException e) {
-                e.printStackTrace();
+            // Écrire le JSON dans le fichier de destination
+            try (FileOutputStream fos = new FileOutputStream(fichierDestination)) {
+                fos.write(json.getBytes());
             }
+            Log.i("MainACTIVITY : ", "Sauvegarde en JSON réussie dans : " + fichierDestination.getAbsolutePath());
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -39,9 +39,6 @@ public class ChargementModele extends AppCompatActivity {
                         Modele m = new Modele();
                         m.setNom(fichier.getName());
                         modeles.add(m);
-                        // Ajoutez ici le code pour traiter chaque fichier JSON
-                        // Vous pouvez charger les fichiers JSON comme dans l'exemple précédent
-                        // MaClasse maInstance = MaClasse.chargerDepuisJson(fichier.getAbsolutePath());
                     }
                 }
             } else {
@@ -55,6 +52,7 @@ public class ChargementModele extends AppCompatActivity {
         rc.setHasFixedSize(true);
         rc.setLayoutManager(new LinearLayoutManager(this));
         rc.setAdapter(ad);
+
 
 
     }
