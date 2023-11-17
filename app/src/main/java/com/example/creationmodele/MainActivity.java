@@ -45,31 +45,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void SauvegarderModele(View view) {
-        try {
-            Context context = this;
-            // Créer un objet ObjectMapper
-            ObjectMapper objectMapper = new ObjectMapper();
+        if(Modele.getInstance().getNom() != null) {
+            try {
+                Context context = this;
+                // Créer un objet ObjectMapper
+                ObjectMapper objectMapper = new ObjectMapper();
 
-            // Convertir l'objet en format JSON
-            String json = objectMapper.writeValueAsString(Modele.getInstance());
+                // Convertir l'objet en format JSON
+                String json = objectMapper.writeValueAsString(Modele.getInstance());
 
-            // Spécifier le nom du fichier
-            String nomFichier = Modele.getInstance().getNom()+".json";
+                // Spécifier le nom du fichier
+                String nomFichier = Modele.getInstance().getNom() + ".json";
 
-            // Obtenir le répertoire de stockage interne de l'application
-            File repertoireInterne = context.getFilesDir();
+                // Obtenir le répertoire de stockage interne de l'application
+                File repertoireInterne = context.getFilesDir();
 
-            // Créer un objet File pour le fichier de destination
-            File fichierDestination = new File(repertoireInterne, nomFichier);
+                // Créer un objet File pour le fichier de destination
+                File fichierDestination = new File(repertoireInterne, nomFichier);
 
-            // Écrire le JSON dans le fichier de destination
-            try (FileOutputStream fos = new FileOutputStream(fichierDestination)) {
-                fos.write(json.getBytes());
+                // Écrire le JSON dans le fichier de destination
+                try (FileOutputStream fos = new FileOutputStream(fichierDestination)) {
+                    fos.write(json.getBytes());
+                }
+                Log.i("MainACTIVITY : ", "Sauvegarde en JSON réussie dans : " + fichierDestination.getAbsolutePath());
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            Log.i("MainACTIVITY : ","Sauvegarde en JSON réussie dans : " + fichierDestination.getAbsolutePath());
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
