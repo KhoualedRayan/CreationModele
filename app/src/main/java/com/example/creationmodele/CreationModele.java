@@ -23,9 +23,8 @@ public class CreationModele extends AppCompatActivity {
 
     }
     public void CreerNouveeauModele(View view) {
-        Modele.getInstance().setNom("OUISITITITI");
-        Log.i("ChargementModele",Modele.getInstance().getNom());
-
+        Modele.getInstance().setNom(editText.getText().toString());
+        Log.i("CREATION_MODELE",editText.getText().toString());
         Intent intent = new Intent(CreationModele.this,MainActivity.class);
         startActivity(intent);
     }

@@ -9,5 +9,7 @@
     <string name="EditionModele">Editer le modèle actuel</string>
     <string name="ModeleActuel">"Le modèle actuel est : "</string>
     <string name="SauvergarderModele">Sauvegarder un modèle</string>
+    <string name="Nom">Nom</string>
+    <string name="TexteVide" />
 
 </resources>
