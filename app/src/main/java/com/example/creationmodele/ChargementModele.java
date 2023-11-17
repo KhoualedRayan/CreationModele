@@ -10,7 +10,7 @@ import android.util.Log;
 import java.io.File;
 import java.util.ArrayList;
 
-import Habitation.Adaptateur;
+import RecylcerViews.AdaptateurModele;
 import Habitation.Modele;
 
 public class ChargementModele extends AppCompatActivity {
@@ -47,7 +47,7 @@ public class ChargementModele extends AppCompatActivity {
         } else {
             Log.i("ChargementModele","Le chemin ne correspond pas à un dossier existant.");
         }
-        Adaptateur ad = new Adaptateur(modeles);
+        AdaptateurModele ad = new AdaptateurModele(modeles);
         RecyclerView rc = findViewById(R.id.recylcerView);
         rc.setHasFixedSize(true);
         rc.setLayoutManager(new LinearLayoutManager(this));

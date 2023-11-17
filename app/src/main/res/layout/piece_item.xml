@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/modele_nom"
+            android:id="@+id/piece_nom"
             android:layout_width="match_parent"
             android:layout_height="84dp"
             android:layout_gravity="center_vertical|start"

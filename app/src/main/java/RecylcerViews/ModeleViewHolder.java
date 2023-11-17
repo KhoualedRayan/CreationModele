@@ -1,7 +1,6 @@
-package Habitation;
+package RecylcerViews;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
@@ -12,18 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.creationmodele.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.json.JSONObject;
-
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+
+import Habitation.Modele;
 
 public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView nom;
 
     public ModeleViewHolder(View itemView) {
         super(itemView);
-        nom = itemView.findViewById(R.id.contact_nom);
+        nom = itemView.findViewById(R.id.modele_nom);
         itemView.setOnClickListener(this);
     }
 

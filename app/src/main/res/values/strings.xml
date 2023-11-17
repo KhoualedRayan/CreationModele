@@ -11,5 +11,6 @@
     <string name="SauvergarderModele">Sauvegarder un modèle</string>
     <string name="Nom">Nom</string>
     <string name="TexteVide" />
+    <string name="AjouterPiece">Ajouter une pièce</string>
 
 </resources>

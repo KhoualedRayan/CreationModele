@@ -13,4 +13,20 @@ public class Piece {
     public void ajouterMur(){
 
     }
+
+    public ArrayList<Mur> getMurArrayList() {
+        return murArrayList;
+    }
+
+    public void setMurArrayList(ArrayList<Mur> murArrayList) {
+        this.murArrayList = murArrayList;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 }

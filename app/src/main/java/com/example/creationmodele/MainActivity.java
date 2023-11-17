@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button creerModele = findViewById(R.id.button_creation_modele);
         Button chargerModele = findViewById(R.id.button_charger_modele);
+        //AJOUTER UNE ALERT POUR LEDITION PAREIL QUE CELLE DE SAVE
         Button editerModele = findViewById(R.id.button_edition_modele);
 
         sendIntent(creerModele,CreationModele.class);
