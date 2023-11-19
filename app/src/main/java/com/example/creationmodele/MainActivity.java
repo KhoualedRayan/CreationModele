@@ -29,12 +29,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button creerModele = findViewById(R.id.button_creation_modele);
         Button chargerModele = findViewById(R.id.button_charger_modele);
-        //AJOUTER UNE ALERT POUR LEDITION PAREIL QUE CELLE DE SAVE
-        Button editerModele = findViewById(R.id.button_edition_modele);
 
         sendIntent(creerModele,CreationModele.class);
         sendIntent(chargerModele,ChargementModele.class);
-        sendIntent(editerModele, EditionModele.class);
+
 
     }
     public void sendIntent(Button button, Class c){
@@ -100,4 +98,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void EditionModele(View view) {
+        if(Modele.getInstance().getNom() != null) {
+            Button editerModele = findViewById(R.id.button_edition_modele);
+            sendIntent(editerModele, EditionModele.class);
+        }else {
+            new AlertDialog.Builder(this)
+                    .setTitle("Impossible d'éditer")
+                    .setMessage("Veuillez charger ou créer un modèle avant d'éditer un modèle.")
+                    .setNeutralButton("OK",null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+    }
 }

@@ -12,5 +12,10 @@
     <string name="Nom">Nom</string>
     <string name="TexteVide" />
     <string name="AjouterPiece">Ajouter une pièce</string>
+    <string name="Nord">Nord\n</string>
+    <string name="Est">Est\n</string>
+    <string name="Ouest">Ouest</string>
+    <string name="Sud">Sud</string>
+    <string name="Valider">Valider</string>
 
 </resources>
