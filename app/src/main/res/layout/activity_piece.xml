@@ -7,11 +7,11 @@
     tools:context=".PieceActivity">
 
     <ImageView
-        android:id="@+id/imageView_Ouest"
+        android:id="@+id/imageView_Nord"
         android:layout_width="110dp"
         android:layout_height="119dp"
         android:contentDescription="@string/Ouest"
-        android:onClick="ajouterImageOuest"
+        android:onClick="ajouterImageNord"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -37,11 +37,11 @@
         tools:ignore="ContentDescription,ImageContrastCheck" />
 
     <ImageView
-        android:id="@+id/imageView_Nord"
+        android:id="@+id/imageView_Ouest"
         android:layout_width="110dp"
         android:layout_height="119dp"
         android:contentDescription="@string/Nord"
-        android:onClick="ajouterImageNord"
+        android:onClick="ajouterImageOuest"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.132"
@@ -75,7 +75,7 @@
         android:text="@string/Ouest"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView_Nord"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_Ouest"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -112,7 +112,7 @@
         android:layout_width="69dp"
         android:layout_height="22dp"
         android:text="@string/Nord"
-        app:layout_constraintBottom_toTopOf="@+id/imageView_Ouest"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_Nord"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -156,6 +156,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"></Outils.AccelVectorView>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></Outils.AccelVectorView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

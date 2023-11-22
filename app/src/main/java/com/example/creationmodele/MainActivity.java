@@ -20,6 +20,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import Habitation.Modele;
+import Outils.ModeleSingleton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void SauvegarderModele(View view) {
-        if(Modele.getInstance().getNom() != null) {
+        if(ModeleSingleton.getInstance().getModeleInstance().getNom() != null) {
             new AlertDialog.Builder(this)
                     .setTitle("Sauvegarde du modèle")
                     .setMessage("Voulez-vous sauvegarder le modèle en cours ?")
@@ -76,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
             ObjectMapper objectMapper = new ObjectMapper();
 
             // Convertir l'objet en format JSON
-            String json = objectMapper.writeValueAsString(Modele.getInstance());
+            String json = objectMapper.writeValueAsString(ModeleSingleton.getInstance().getModeleInstance());
 
             // Spécifier le nom du fichier
-            String nomFichier = Modele.getInstance().getNom() + ".json";
+            String nomFichier = ModeleSingleton.getInstance().getModeleInstance().getNom() + ".json";
 
             // Obtenir le répertoire de stockage interne de l'application
             File repertoireInterne = context.getFilesDir();
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void EditionModele(View view) {
-        if(Modele.getInstance().getNom() != null) {
+        if(ModeleSingleton.getInstance().getModeleInstance().getNom() != null) {
             Button editerModele = findViewById(R.id.button_edition_modele);
             sendIntent(editerModele, EditionModele.class);
         }else {

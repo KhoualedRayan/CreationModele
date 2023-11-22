@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 import Habitation.Modele;
+import Outils.ModeleSingleton;
 
 public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView nom;
@@ -73,7 +74,7 @@ public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.On
 
             // Lire le fichier JSON et le convertir en objet de la classe MaClasse
             Modele modeleCharger = objectMapper.readValue(new File(chemin), Modele.class);
-            Modele.getInstance().remplacementModele(modeleCharger);
+            ModeleSingleton.getInstance().getModeleInstance().remplacementModele(modeleCharger);
 
         } catch (IOException e) {
             e.printStackTrace();

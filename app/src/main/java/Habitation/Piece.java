@@ -1,25 +1,55 @@
 package Habitation;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 
 public class Piece {
-    private ArrayList<Mur> murArrayList;
+    private Mur murNord;
+    private Mur murEst;
+    private Mur murSud;
+    private Mur murOuest;
     private String nom;
-
-    public Piece(String nom) {
-        this.murArrayList = new ArrayList<>(4);
+    @JsonCreator
+    public Piece(@JsonProperty("nom") String nom) {
+        this.murNord = new Mur();
+        this.murOuest= new Mur();
+        this.murEst = new Mur();
+        this.murSud = new Mur();
         this.nom = nom;
     }
-    public void ajouterMur(){
 
+    public Mur getMurNord() {
+        return murNord;
     }
 
-    public ArrayList<Mur> getMurArrayList() {
-        return murArrayList;
+    public void setMurNord(Mur murNord) {
+        this.murNord = murNord;
     }
 
-    public void setMurArrayList(ArrayList<Mur> murArrayList) {
-        this.murArrayList = murArrayList;
+    public Mur getMurEst() {
+        return murEst;
+    }
+
+    public void setMurEst(Mur murEst) {
+        this.murEst = murEst;
+    }
+
+    public Mur getMurSud() {
+        return murSud;
+    }
+
+    public void setMurSud(Mur murSud) {
+        this.murSud = murSud;
+    }
+
+    public Mur getMurOuest() {
+        return murOuest;
+    }
+
+    public void setMurOuest(Mur murOuest) {
+        this.murOuest = murOuest;
     }
 
     public String getNom() {

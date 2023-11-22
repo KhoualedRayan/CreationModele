@@ -52,8 +52,5 @@ public class ChargementModele extends AppCompatActivity {
         rc.setHasFixedSize(true);
         rc.setLayoutManager(new LinearLayoutManager(this));
         rc.setAdapter(ad);
-
-
-
     }
 }
