@@ -15,12 +15,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.ArrayList;
 
-import Habitation.Piece;
-import Outils.ModeleSingleton;
-import RecylcerViews.AdaptateurPiece;
+
+import habitation.Piece;
+import outils.ModeleSingleton;
+import recyclerViews.AdaptateurPiece;
 
 public class EditionModele extends AppCompatActivity {
     private ArrayList<Piece> pieces;
@@ -56,7 +56,10 @@ public class EditionModele extends AppCompatActivity {
 
     }
     private void initPieces(){
-        pieces.addAll(ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList());
+        for (Piece p : ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList()){
+            pieces.add(p);
+        }
+        Log.i("EDITION MODELE NB PIECES", String.valueOf(ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().size()));
         AdaptateurPiece ad = new AdaptateurPiece(pieces);
         RecyclerView rc = findViewById(R.id.recylcerView_Pieces);
         rc.setHasFixedSize(true);

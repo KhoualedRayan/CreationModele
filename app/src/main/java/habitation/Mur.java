@@ -1,15 +1,20 @@
-package Habitation;
+package habitation;
+
+import java.util.ArrayList;
 
 public class Mur {
     private Orientation orientation;
     private String nomBitmap;
+    private ArrayList<Ouverture> ouvertures;
 
     public Mur() {
+        ouvertures = new ArrayList<>();
     }
 
     public Mur(Orientation orientation, String nomBitmap) {
         this.orientation = orientation;
         this.nomBitmap = nomBitmap;
+        ouvertures = new ArrayList<>();
     }
 
     public Orientation getOrientation() {
@@ -34,5 +39,13 @@ public class Mur {
                 "orientation=" + orientation +
                 ", nomBitmap='" + nomBitmap + '\'' +
                 '}';
+    }
+
+    public ArrayList<Ouverture> getOuvertures() {
+        return ouvertures;
+    }
+
+    public void setOuvertures(ArrayList<Ouverture> ouvertures) {
+        this.ouvertures = ouvertures;
     }
 }

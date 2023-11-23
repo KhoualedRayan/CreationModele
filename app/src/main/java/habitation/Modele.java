@@ -1,9 +1,4 @@
-package Habitation;
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
+package habitation;
 
 import java.util.ArrayList;
 
@@ -40,6 +35,5 @@ public class Modele {
     public void setNom(String nom) {
         this.nom = nom;
     }
-
 
 }

@@ -1,4 +1,4 @@
-package RecylcerViews;
+package recyclerViews;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import com.example.creationmodele.R;
 
 import java.util.ArrayList;
 
-import Habitation.Modele;
+import habitation.Modele;
 
 public class AdaptateurModele extends RecyclerView.Adapter<ModeleViewHolder> {
 

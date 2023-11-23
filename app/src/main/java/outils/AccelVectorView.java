@@ -1,4 +1,4 @@
-package Outils;
+package outils;
 
 import android.content.Context;
 import android.graphics.Canvas;

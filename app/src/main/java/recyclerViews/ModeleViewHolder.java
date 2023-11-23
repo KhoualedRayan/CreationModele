@@ -1,4 +1,4 @@
-package RecylcerViews;
+package recyclerViews;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,8 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 
-import Habitation.Modele;
-import Outils.ModeleSingleton;
+import habitation.Modele;
+import outils.ModeleSingleton;
 
 public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView nom;
@@ -40,18 +40,9 @@ public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.On
         new AlertDialog.Builder(itemView.getContext())
                 .setTitle(nom.getText().toString())
                 .setMessage("Que voulez vous faire avec ce modèle ?")
-                .setPositiveButton("Charger le modèle", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        chargerModele();
-                    }
-                })
+                .setPositiveButton("Charger le modèle", (dialog, which) -> chargerModele())
 
-                // A null listener allows the button to dismiss the dialog and take no further action.
-                .setNegativeButton("Supprimer le modèle", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        supprimerModele();
-                    }
-                })
+                .setNegativeButton("Supprimer le modèle", (dialog, which) -> supprimerModele())
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }

@@ -10,8 +10,8 @@ import android.util.Log;
 import java.io.File;
 import java.util.ArrayList;
 
-import RecylcerViews.AdaptateurModele;
-import Habitation.Modele;
+import recyclerViews.AdaptateurModele;
+import habitation.Modele;
 
 public class ChargementModele extends AppCompatActivity {
     private ArrayList<Modele> modeles;

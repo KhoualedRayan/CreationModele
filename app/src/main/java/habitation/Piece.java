@@ -1,9 +1,7 @@
-package Habitation;
+package habitation;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.ArrayList;
 
 public class Piece {
     private Mur murNord;
@@ -58,5 +56,16 @@ public class Piece {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    @Override
+    public String toString() {
+        return "Piece{" +
+                "murNord=" + murNord +
+                ", murEst=" + murEst +
+                ", murSud=" + murSud +
+                ", murOuest=" + murOuest +
+                ", nom='" + nom + '\'' +
+                '}';
     }
 }

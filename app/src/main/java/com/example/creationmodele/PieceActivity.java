@@ -15,6 +15,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -27,12 +28,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import Habitation.Modele;
-import Habitation.Mur;
-import Habitation.Orientation;
-import Habitation.Piece;
-import Outils.AccelVectorView;
-import Outils.ModeleSingleton;
+import habitation.Mur;
+import habitation.Orientation;
+import habitation.Piece;
+import outils.AccelVectorView;
+import outils.ModeleSingleton;
 
 public class PieceActivity extends AppCompatActivity implements SensorEventListener {
     private Switch capteur;
@@ -56,11 +56,17 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
     private ImageView imageView_Sud;
     private ImageView imageView_Est;
     private ImageView imageView_Ouest;
+    private boolean pieceExistant;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_piece);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        initCapteurs();
+        initPiece();
+        showImageOnCreate();
+    }
+    public void initCapteurs(){
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometre = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometre = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -70,6 +76,8 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
         accel = new float[3];
         magneto = new float[3];
         orientation = new float[3];
+    }
+    public void initPiece(){
         String nomPiece = "null";
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
@@ -77,14 +85,24 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
         {
             nomPiece =(String) b.get("nomPiece");
         }
-        piece = new Piece(nomPiece);
+        for (Piece p : ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList()){
+            if(p.getNom().equals(nomPiece)){
+                piece = p;
+                Log.i("PIECE ACTIVTY","PIECE EXISTE DEJA");
+                pieceExistant = true;
+            }
+        }
+        if (!pieceExistant)
+            piece = new Piece(nomPiece);
         Log.i("PIECE ACTIVITY",nomPiece);
         imageView_Nord = findViewById(R.id.imageView_Nord);
         imageView_Sud = findViewById(R.id.imageView_Sud);
         imageView_Est = findViewById(R.id.imageView_Est);
         imageView_Ouest = findViewById(R.id.imageView_Ouest);
-
-        //showImageOnCreate();
+        Log.i("PIECE ACTIVITY",piece.getMurEst().getOuvertures().toString());
+        Log.i("PIECE ACTIVITY",piece.getMurNord().getOuvertures().toString());
+        Log.i("PIECE ACTIVITY",piece.getMurOuest().getOuvertures().toString());
+        Log.i("PIECE ACTIVITY",piece.getMurSud().getOuvertures().toString());
     }
 
     public void ajouterImageOuest(View view) {
@@ -126,15 +144,48 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
     public void Valider(View view) {
         Log.i("PIECE ACTIVITY", ModeleSingleton.getInstance().getModeleInstance().getNom());
         Log.i("PIECE ACTIVITY", String.valueOf(ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().size()));
-        ModeleSingleton.getInstance().getModeleInstance().ajouterPiece(piece);
+        if(!pieceExistant)
+            ModeleSingleton.getInstance().getModeleInstance().ajouterPiece(piece);
         Log.i("PIECE ACTIVITY", ModeleSingleton.getInstance().getModeleInstance().getNom());
         Log.i("PIECE ACTIVITY", String.valueOf(ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().size()));
         finish();
     }
     public void showImageOnCreate(){
+
+        FileInputStream fis = null;
+        try {
+            if(piece.getMurNord().getNomBitmap() != null){
+                Log.i("PIECE ACTIVITY",piece.getMurNord().getNomBitmap() );
+                fis = openFileInput(piece.getMurNord().getNomBitmap());
+                Bitmap bm = BitmapFactory.decodeStream(fis);
+                imageView_Nord.setImageBitmap(bm);
+            }
+            if(piece.getMurEst().getNomBitmap() != null){
+                Log.i("PIECE ACTIVITY",piece.getMurEst().getNomBitmap() );
+                fis = openFileInput(piece.getMurEst().getNomBitmap());
+                Bitmap bm = BitmapFactory.decodeStream(fis);
+                imageView_Est.setImageBitmap(bm);
+            }
+            if(piece.getMurOuest().getNomBitmap() != null){
+                Log.i("PIECE ACTIVITY",piece.getMurOuest().getNomBitmap() );
+                fis = openFileInput(piece.getMurOuest().getNomBitmap());
+                Bitmap bm = BitmapFactory.decodeStream(fis);
+                imageView_Ouest.setImageBitmap(bm);
+            }
+            if(piece.getMurSud().getNomBitmap() != null){
+                Log.i("PIECE ACTIVITY",piece.getMurSud().getNomBitmap() );
+                fis = openFileInput(piece.getMurSud().getNomBitmap());
+                Bitmap bm = BitmapFactory.decodeStream(fis);
+                imageView_Sud.setImageBitmap(bm);
+            }
+        }catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
     }    
     public void showImage(Mur m){
         FileInputStream fis = null;
+        Intent intent = new Intent(this,OuvertureActivity.class);
         try {
             fis = openFileInput(m.getNomBitmap());
             Bitmap bm = BitmapFactory.decodeStream(fis);
@@ -152,6 +203,10 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
                     imageView_Ouest.setImageBitmap(bm);
                     break;
             }
+            intent.putExtra("Bitmap",bm);
+            intent.putExtra("Mur",m.getNomBitmap());
+            intent.putExtra("Piece", piece.getNom());
+            startActivity(intent);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -10,17 +10,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 
-import Habitation.Modele;
-import Outils.ModeleSingleton;
+import outils.ModeleSingleton;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,6 +1,8 @@
-package Outils;
+package outils;
 
-import Habitation.Modele;
+import java.util.ArrayList;
+
+import habitation.Modele;
 
 public class ModeleSingleton {
     private Modele modeleInstance;
@@ -17,5 +19,9 @@ public class ModeleSingleton {
 
     public Modele getModeleInstance() {
         return modeleInstance;
+    }
+
+    public void clear() {
+        this.modeleInstance.getPieceArrayList().clear();
     }
 }

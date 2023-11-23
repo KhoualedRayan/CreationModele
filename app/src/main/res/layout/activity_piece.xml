@@ -149,7 +149,7 @@
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Outils.AccelVectorView
+    <outils.AccelVectorView
         android:id="@+id/accelVectorView"
         android:layout_width="408dp"
         android:layout_height="736dp"
@@ -157,6 +157,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></Outils.AccelVectorView>
+        app:layout_constraintTop_toTopOf="parent"></outils.AccelVectorView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
