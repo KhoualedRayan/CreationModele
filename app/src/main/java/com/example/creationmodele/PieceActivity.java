@@ -87,13 +87,16 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
         }
         for (Piece p : ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList()){
             if(p.getNom().equals(nomPiece)){
+                ModeleSingleton.getInstance().setPieceEnCours(p);
                 piece = p;
                 Log.i("PIECE ACTIVTY","PIECE EXISTE DEJA");
                 pieceExistant = true;
             }
         }
-        if (!pieceExistant)
+        if (!pieceExistant) {
             piece = new Piece(nomPiece);
+            ModeleSingleton.getInstance().setPieceEnCours(piece);
+        }
         Log.i("PIECE ACTIVITY",nomPiece);
         imageView_Nord = findViewById(R.id.imageView_Nord);
         imageView_Sud = findViewById(R.id.imageView_Sud);
@@ -106,38 +109,26 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
     }
 
     public void ajouterImageOuest(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE) ;
-        if (intent.resolveActivity(getPackageManager())!=null) {
-            Toast.makeText(PieceActivity.this, "Photo du mur OUEST", Toast.LENGTH_SHORT).show() ;
-            startActivityForResult(intent,PHOTO_OUEST);
-            setResult(RESULT_OK,intent);
-        }
+        prendrePhoto(PHOTO_OUEST);
     }
 
     public void ajouterImageEst(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE) ;
-        if (intent.resolveActivity(getPackageManager())!=null) {
-            Toast.makeText(PieceActivity.this, "Photo du mur EST", Toast.LENGTH_SHORT).show() ;
-            startActivityForResult(intent,PHOTO_EST);
-            setResult(RESULT_OK,intent);
-        }
+        prendrePhoto(PHOTO_EST);
     }
 
     public void ajouterImageNord(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE) ;
-        if (intent.resolveActivity(getPackageManager())!=null) {
-            Toast.makeText(PieceActivity.this, "Photo du mur NORD", Toast.LENGTH_SHORT).show() ;
-            startActivityForResult(intent,PHOTO_NORD);
-            setResult(RESULT_OK,intent);
-        }
+        prendrePhoto(PHOTO_NORD);
     }
 
     public void ajouterImageSud(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE) ;
-        if (intent.resolveActivity(getPackageManager())!=null) {
-            Toast.makeText(PieceActivity.this, "Photo du mur SUD", Toast.LENGTH_SHORT).show() ;
-            startActivityForResult(intent,PHOTO_SUD);
-            setResult(RESULT_OK,intent);
+        prendrePhoto(PHOTO_SUD);
+    }
+    private void prendrePhoto(int requestCode) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            Toast.makeText(PieceActivity.this, "Prendre une photo", Toast.LENGTH_SHORT).show();
+            startActivityForResult(intent, requestCode);
+            setResult(RESULT_OK, intent);
         }
     }
 
@@ -145,13 +136,12 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
         Log.i("PIECE ACTIVITY", ModeleSingleton.getInstance().getModeleInstance().getNom());
         Log.i("PIECE ACTIVITY", String.valueOf(ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().size()));
         if(!pieceExistant)
-            ModeleSingleton.getInstance().getModeleInstance().ajouterPiece(piece);
+            ModeleSingleton.getInstance().getModeleInstance().ajouterPiece(ModeleSingleton.getInstance().getPieceEnCours());
         Log.i("PIECE ACTIVITY", ModeleSingleton.getInstance().getModeleInstance().getNom());
         Log.i("PIECE ACTIVITY", String.valueOf(ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().size()));
         finish();
     }
     public void showImageOnCreate(){
-
         FileInputStream fis = null;
         try {
             if(piece.getMurNord().getNomBitmap() != null){
@@ -205,7 +195,6 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
             }
             intent.putExtra("Bitmap",bm);
             intent.putExtra("Mur",m.getNomBitmap());
-            intent.putExtra("Piece", piece.getNom());
             startActivity(intent);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -220,7 +209,7 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
             Bundle extras = data.getExtras();
             Bitmap imageBitMap = (Bitmap) extras.get("data");
             FileOutputStream fos;
-            String name;
+            String name ="";
             Mur mur = new Mur();
             try {
                 switch (requestCode){
@@ -229,39 +218,33 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
                         mur.setNomBitmap(name);
                         mur.setOrientation(Orientation.NORD);
                         piece.setMurNord(mur);
-                        fos = openFileOutput(name, MODE_PRIVATE);
-                        imageBitMap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                        fos.flush();
+                        ModeleSingleton.getInstance().getPieceEnCours().setMurNord(mur);
                         break;
                     case PHOTO_EST:
                         name = piece.getNom()+"_Est";
                         mur.setNomBitmap(name);
                         mur.setOrientation(Orientation.EST);
+                        ModeleSingleton.getInstance().getPieceEnCours().setMurEst(mur);
                         piece.setMurEst(mur);
-                        fos = openFileOutput(name, MODE_PRIVATE);
-                        imageBitMap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                        fos.flush();
                         break;
                     case PHOTO_OUEST:
                         name = piece.getNom()+"_Ouest";
                         mur.setNomBitmap(name);
                         mur.setOrientation(Orientation.OUEST);
+                        ModeleSingleton.getInstance().getPieceEnCours().setMurOuest(mur);
                         piece.setMurOuest(mur);
-                        fos = openFileOutput(name, MODE_PRIVATE);
-                        imageBitMap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                        fos.flush();
                         break;
                     case PHOTO_SUD:
                         name = piece.getNom()+"_Sud";
                         mur.setNomBitmap(name);
                         mur.setOrientation(Orientation.SUD);
+                        ModeleSingleton.getInstance().getPieceEnCours().setMurSud(mur);
                         piece.setMurSud(mur);
-                        fos = openFileOutput(name, MODE_PRIVATE);
-                        imageBitMap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                        fos.flush();
                         break;
-
                 }
+                fos = openFileOutput(name, MODE_PRIVATE);
+                imageBitMap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                fos.flush();
                 Log.i("PIECE ACTIVITY",mur.toString());
                 showImage(mur);
             } catch (FileNotFoundException e) {

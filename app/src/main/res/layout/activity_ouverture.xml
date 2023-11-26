@@ -37,10 +37,40 @@
         android:layout_marginTop="39dp"
         android:layout_marginEnd="159dp"
         android:layout_marginBottom="54dp"
-        android:text="@string/Valider"
+        android:backgroundTint="@color/design_default_color_primary"
         android:onClick="validerOnClick"
+        android:text="@string/Valider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frame_layout" />
+
+    <Button
+        android:id="@+id/button_derniereOuverture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginEnd="85dp"
+        android:onClick="supprDerniereOuveture"
+        android:backgroundTint="@android:color/holo_orange_dark"
+        android:text="@string/SupprLastOuverture"
+        android:textColor="#4E342E"
+        app:layout_constraintBottom_toTopOf="@+id/button_supprOuvertures"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_supprOuvertures"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="79dp"
+        android:layout_marginEnd="79dp"
+        android:backgroundTint="@color/design_default_color_error"
+        android:text="@string/SupprOuvertures"
+        android:onClick="supprOuvertures"
+        app:layout_constraintBottom_toTopOf="@+id/frame_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_derniereOuverture" />
 </androidx.constraintlayout.widget.ConstraintLayout>

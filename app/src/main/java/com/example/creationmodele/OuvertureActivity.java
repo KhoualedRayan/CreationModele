@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,10 +50,9 @@ public class OuvertureActivity extends AppCompatActivity {
     private ArrayList<Piece> pieces;
     private Mur mur;
     private Piece piece;
-    private Piece p;
     private ArrayList<Ouverture> ouvertures;
-    private String nomPiece;
     private String nomMur;
+    private boolean superposition = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,50 +67,58 @@ public class OuvertureActivity extends AppCompatActivity {
 
                 switch (action){
                     case MotionEvent.ACTION_DOWN:
-                        if(pointerId == 0){
-                            remove0();
-                            list.add(pointerId);
-                        }else if(pointerId == 1){
-                            remove1();
-                            list.add(pointerId);
-                        }
+                        motionDownHandler(pointerId);
                         break;
                     case MotionEvent.ACTION_POINTER_DOWN:
-                        if(pointerId == 0){
-                            remove0();
-                            list.add(pointerId);
-                        }else if(pointerId == 1){
-                            remove1();
-                            list.add(pointerId);
-                        }
-                        if(motionEvent.getPointerCount() == 2){
-                            x = (int) motionEvent.getX(0);
-                            y = (int) motionEvent.getY(0);
-                            String coord1 = "Coords du pointeur 0, X : " + x + " Y : " + y;
-                            x1 = (int) motionEvent.getX(1);
-                            y1 = (int)  motionEvent.getY(1);
-                            String coord2 = "Coords du pointeur 1, X : " + x1 + " Y : " + y1;
-                            Log.i("Select Activity", coord1);
-                            Log.i("Select Activity", coord2);
-                            Rect rect1 = new Rect();
-                            rect1.set(x1,y1,x,y);
-                            rect1.sort();
-                            rects.add(rect1);
-                            Log.i("Select Activity",rect1.toString());
-                            dessinRectangle();
-                        }
-                        Log.i("Select Activity",list.toString());
+                        motionPointerDownHandler(motionEvent,pointerId);
+                        break; // Ajout du break ici
                     case MotionEvent.ACTION_UP:
-                        if(motionEvent.getPointerCount() <2 && dessin){
-                            ajoutPiece();
-                        }
+                        motionUpHandler(motionEvent);
                         break;
                 }
                 return true;
             }
         });
     }
-
+    public void motionDownHandler(int pointerId){
+        if(pointerId == 0){
+            remove0();
+            list.add(pointerId);
+        }else if(pointerId == 1){
+            remove1();
+            list.add(pointerId);
+        }
+    }
+    public void motionPointerDownHandler(MotionEvent motionEvent, int pointerId){
+        if(pointerId == 0){
+            remove0();
+            list.add(pointerId);
+        } else if(pointerId == 1){
+            remove1();
+            list.add(pointerId);
+        }
+        if(motionEvent.getPointerCount() == 2){
+            x = (int) motionEvent.getX(0);
+            y = (int) motionEvent.getY(0);
+            String coord1 = "Coords du pointeur 0, X : " + x + " Y : " + y;
+            x1 = (int) motionEvent.getX(1);
+            y1 = (int)  motionEvent.getY(1);
+            String coord2 = "Coords du pointeur 1, X : " + x1 + " Y : " + y1;
+            Log.i("Select Activity", coord1);
+            Log.i("Select Activity", coord2);
+            rect = new Rect();
+            rect.set(x1, y1, x, y);
+            rect.sort();
+            Log.i("Select Activity", rect.toString());
+            dessinRectangle();
+        }
+        Log.i("Select Activity", list.toString());
+    }
+    public void motionUpHandler(MotionEvent motionEvent){
+        if(motionEvent.getPointerCount() < 2 && dessin){
+            verifAjoutPiece();
+        }
+    }
     public void init(){
         imageView = findViewById(R.id.imageView_MurEdit);
         pieces = new ArrayList<>();
@@ -124,23 +132,8 @@ public class OuvertureActivity extends AppCompatActivity {
             Bitmap bitmap =(Bitmap) b.get("Bitmap");
             imageView.setImageBitmap(bitmap);
             nomMur = (String) b.get("Mur");
-            nomPiece = (String) b.get("Piece");
-            Iterator<Piece> iterator = ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().iterator();
-
-            while (iterator.hasNext()) {
-                p = iterator.next();
-                if (p.getNom().equals(nomPiece)) {
-                    piece = p;
-                    if(nomMur.equals(p.getMurEst().getNomBitmap()))
-                        mur = p.getMurEst();
-                    else if(nomMur.equals(p.getMurOuest().getNomBitmap()))
-                        mur = p.getMurOuest();
-                    else if(nomMur.equals(p.getMurSud().getNomBitmap()))
-                        mur = p.getMurSud();
-                    else if(nomMur.equals(p.getMurNord().getNomBitmap()))
-                        mur = p.getMurNord();
-                }
-            }
+            piece = ModeleSingleton.getInstance().getPieceEnCours();
+            mur = getMurByNom(nomMur);
             Log.i("OUVERTURE ACTIVITY", mur.getNomBitmap());
             Log.i("OUVERTURE ACTIVITY", piece.toString());
         }
@@ -156,64 +149,84 @@ public class OuvertureActivity extends AppCompatActivity {
         paint.setStrokeWidth(3);
         list = new ArrayList<>();
     }
+    public Mur getMurByNom(String nom) {
+        if (nom.equals(piece.getMurEst().getNomBitmap())) return piece.getMurEst();
+        if (nom.equals(piece.getMurOuest().getNomBitmap())) return piece.getMurOuest();
+        if (nom.equals(piece.getMurSud().getNomBitmap())) return piece.getMurSud();
+        if (nom.equals(piece.getMurNord().getNomBitmap())) return piece.getMurNord();
+        return new Mur();
+    }
 
     public void dessinRectangle() {
-        this.canvas = surfaceView.getHolder().lockCanvas();
+        canvas = surfaceView.getHolder().lockCanvas();
         if (canvas != null) {
-            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR); // Efface le contenu précédent
-            canvas.drawRect(rect, this.paint);
-            surfaceView.getHolder().unlockCanvasAndPost(this.canvas);
+            try {
+                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR); // Efface le contenu précédent
+                for (Rect r : rects)
+                    canvas.drawRect(r, paint);
+                if(!superposition)
+                    canvas.drawRect(rect, paint);
+                superposition = false;
+            } finally {
+                surfaceView.getHolder().unlockCanvasAndPost(canvas);
+            }
             dessin = true;
         }
     }
+
     public void ajoutPiece(){
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT );
-        Intent intent = new Intent(this,PieceActivity.class);
         new AlertDialog.Builder(this)
                 .setTitle("Nouvelle piece")
                 .setMessage("Ecrire le nom de la pièce à créer à relier à cette ouverture.")
                 .setView(input)
                 .setPositiveButton("Valider", (dialog, which) -> {
-                    Piece p = new Piece(input.getText().toString());
+                    String nomPiece = input.getText().toString();
+                    Piece p = new Piece(nomPiece);
                     pieces.add(p);
-                    Ouverture ouverture = new Ouverture(piece,p,rect);
+                    Ouverture ouverture = new Ouverture(ModeleSingleton.getInstance().getPieceEnCours(), p, rect);
                     ouvertures.add(ouverture);
+                    Toast.makeText(this, "Ajout de la nouvelle pièce : "+nomPiece, Toast.LENGTH_SHORT).show();
                 })
-                .setNegativeButton("Annuler",null)
+                .setNegativeButton("Annuler", null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
-    public void remove0(){
-        for (int i = 0; i<list.size(); i++){
-            if (list.get(i) == 0){
-                list.remove(i);
-            }
-        }
-    }public void remove1(){
-        for (int i = 0; i<list.size(); i++){
-            if (list.get(i) == 1){
-                list.remove(i);
+
+    public void remove0() {
+        removePointerId(0);
+    }
+
+    public void remove1() {
+        removePointerId(1);
+    }
+    public void removePointerId(int pointerId) {
+        Iterator<Integer> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            Integer id = iterator.next();
+            if (id == pointerId) {
+                iterator.remove();
             }
         }
     }
 
     public void validerOnClick(View view) {
         ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().addAll(pieces);
-        if (p.getNom().equals(nomPiece)) {
-            piece = p;
-            if(nomMur.equals(p.getMurEst().getNomBitmap()))
-                p.getMurEst().setOuvertures(ouvertures);
-            else if(nomMur.equals(p.getMurOuest().getNomBitmap()))
-                p.getMurOuest().setOuvertures(ouvertures);
-            else if(nomMur.equals(p.getMurSud().getNomBitmap()))
-                p.getMurSud().setOuvertures(ouvertures);
-            else if(nomMur.equals(p.getMurNord().getNomBitmap()))
-                p.getMurNord().setOuvertures(ouvertures);
-        }
+        updateOuvertures();
         finish();
     }
-    private boolean isEmplacementOccupe(Rect nouvelEmplacement) {
+    public void updateOuvertures() {
+        if(nomMur.equals(piece.getMurEst().getNomBitmap()))
+            ModeleSingleton.getInstance().getPieceEnCours().getMurEst().setOuvertures(ouvertures);
+        if(nomMur.equals(piece.getMurOuest().getNomBitmap()))
+            ModeleSingleton.getInstance().getPieceEnCours().getMurOuest().setOuvertures(ouvertures);
+        if(nomMur.equals(piece.getMurSud().getNomBitmap()))
+            ModeleSingleton.getInstance().getPieceEnCours().getMurSud().setOuvertures(ouvertures);
+        if(nomMur.equals(piece.getMurNord().getNomBitmap()))
+            ModeleSingleton.getInstance().getPieceEnCours().getMurNord().setOuvertures(ouvertures);
+    }
+    public boolean isEmplacementOccupe(Rect nouvelEmplacement) {
         for (Rect rect : rects) {
             if (Rect.intersects(rect, nouvelEmplacement)) {
                 // Les rectangles se chevauchent, l'emplacement est occupé
@@ -222,5 +235,34 @@ public class OuvertureActivity extends AppCompatActivity {
         }
         // Aucun chevauchement trouvé, l'emplacement est libre
         return false;
+    }
+    public void verifAjoutPiece() {
+        if (!isEmplacementOccupe(rect)) {
+            superposition = false;
+            rects.add(rect);
+            ajoutPiece();
+        } else {
+            // Gérer le cas où il y a une superposition
+            superposition = true;
+            Toast.makeText(this, "Superposition de rectangles détectée", Toast.LENGTH_SHORT).show();
+            // Redessiner avec la liste mise à jour des rectangles
+            dessinRectangle();
+        }
+    }
+
+    public void supprDerniereOuveture(View view) {
+        rects.remove(rects.size()-1);
+        pieces.remove(pieces.size()-1);
+        ouvertures.remove(ouvertures.size()-1);
+        superposition = true;
+        dessinRectangle();
+    }
+
+    public void supprOuvertures(View view) {
+        rects.clear();
+        pieces.clear();
+        ouvertures.clear();
+        superposition = true;
+        dessinRectangle();
     }
 }

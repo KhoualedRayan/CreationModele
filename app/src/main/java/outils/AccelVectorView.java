@@ -57,12 +57,7 @@ public class AccelVectorView extends View {
         float stopX = startX - accel[0] * 50;
         float stopY = startY + accel[1] *50;
 
-        //canvas.drawLine(startX, startY, stopX, stopY, paint);
-
-
-
-
-
+        canvas.drawLine(startX, startY, stopX, stopY, paint);
 
     }
 

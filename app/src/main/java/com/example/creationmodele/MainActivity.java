@@ -98,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void EditionModele(View view) {
         if(ModeleSingleton.getInstance().getModeleInstance().getNom() != null) {
-            Button editerModele = findViewById(R.id.button_edition_modele);
-            sendIntent(editerModele, EditionModele.class);
+            Intent i = new Intent(this, EditionModele.class);
+            startActivity(i);
         }else {
             new AlertDialog.Builder(this)
                     .setTitle("Impossible d'éditer")
