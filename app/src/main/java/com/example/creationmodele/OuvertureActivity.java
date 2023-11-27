@@ -1,6 +1,7 @@
 package com.example.creationmodele;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,19 +23,23 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import habitation.Modele;
 import habitation.Mur;
 import habitation.Ouverture;
 import habitation.Piece;
 import outils.ModeleSingleton;
+import recyclerViews.AdaptateurPiece;
 
 public class OuvertureActivity extends AppCompatActivity {
     private ImageView imageView;
@@ -52,6 +57,7 @@ public class OuvertureActivity extends AppCompatActivity {
     private Piece piece;
     private ArrayList<Ouverture> ouvertures;
     private String nomMur;
+    private AlertDialog al;
     private boolean superposition = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,18 +131,6 @@ public class OuvertureActivity extends AppCompatActivity {
         ouvertures = new ArrayList<>();
         rects = new ArrayList<>();
         mur = new Mur();
-        Intent intent = getIntent();
-        Bundle b = intent.getExtras();
-        if(b!=null)
-        {
-            Bitmap bitmap =(Bitmap) b.get("Bitmap");
-            imageView.setImageBitmap(bitmap);
-            nomMur = (String) b.get("Mur");
-            piece = ModeleSingleton.getInstance().getPieceEnCours();
-            mur = getMurByNom(nomMur);
-            Log.i("OUVERTURE ACTIVITY", mur.getNomBitmap());
-            Log.i("OUVERTURE ACTIVITY", piece.toString());
-        }
         rect = new Rect();
         surfaceView = findViewById(R.id.surfaceView);
         surfaceHolder = surfaceView.getHolder();
@@ -148,23 +142,55 @@ public class OuvertureActivity extends AppCompatActivity {
         paint.setColor(Color.RED);
         paint.setStrokeWidth(3);
         list = new ArrayList<>();
+        Intent intent = getIntent();
+        Bundle b = intent.getExtras();
+        if(b!=null)
+        {
+            Bitmap bitmap =(Bitmap) b.get("Bitmap");
+            imageView.setImageBitmap(bitmap);
+            nomMur = (String) b.get("Mur");
+            piece = ModeleSingleton.getInstance().getPieceEnCours();
+            mur = getMurByNom(nomMur);
+            for (Ouverture ouverture: ouvertures){
+                pieces.add(ouverture.getPieceArrivee());
+                rects.add(ouverture.getRect());
+            }
+            dessinRectangle();
+            Log.i("OUVERTURE ACTIVITY", mur.getNomBitmap());
+            Log.i("OUVERTURE ACTIVITY", piece.toString());
+        }
     }
     public Mur getMurByNom(String nom) {
-        if (nom.equals(piece.getMurEst().getNomBitmap())) return piece.getMurEst();
-        if (nom.equals(piece.getMurOuest().getNomBitmap())) return piece.getMurOuest();
-        if (nom.equals(piece.getMurSud().getNomBitmap())) return piece.getMurSud();
-        if (nom.equals(piece.getMurNord().getNomBitmap())) return piece.getMurNord();
+        if (nom.equals(piece.getMurEst().getNomBitmap())){
+            ouvertures = ModeleSingleton.getInstance().getPieceEnCours().getMurEst().getOuvertures();
+            return piece.getMurEst();
+        }
+        if (nom.equals(piece.getMurOuest().getNomBitmap())){
+            ouvertures = ModeleSingleton.getInstance().getPieceEnCours().getMurOuest().getOuvertures();
+            return piece.getMurOuest();
+        }
+        if (nom.equals(piece.getMurSud().getNomBitmap())){
+            ouvertures = ModeleSingleton.getInstance().getPieceEnCours().getMurSud().getOuvertures();
+            return piece.getMurSud();
+        }
+        if (nom.equals(piece.getMurNord().getNomBitmap())){
+            ouvertures = ModeleSingleton.getInstance().getPieceEnCours().getMurNord().getOuvertures();
+            return piece.getMurNord();
+        }
         return new Mur();
     }
 
+
     public void dessinRectangle() {
+        Rect imageRect = new Rect();
+        imageView.getHitRect(imageRect);
         canvas = surfaceView.getHolder().lockCanvas();
         if (canvas != null) {
             try {
                 canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR); // Efface le contenu précédent
                 for (Rect r : rects)
                     canvas.drawRect(r, paint);
-                if(!superposition)
+                if (!superposition)
                     canvas.drawRect(rect, paint);
                 superposition = false;
             } finally {
@@ -172,26 +198,88 @@ public class OuvertureActivity extends AppCompatActivity {
             }
             dessin = true;
         }
-    }
 
-    public void ajoutPiece(){
+    }
+    public void ajoutPiece() {
         final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT );
-        new AlertDialog.Builder(this)
-                .setTitle("Nouvelle piece")
-                .setMessage("Ecrire le nom de la pièce à créer à relier à cette ouverture.")
-                .setView(input)
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        List<String> listeNomsPieces = new ArrayList<>();
+        listeNomsPieces.add("Créer une nouvelle pièce");
+        for (Piece piece : ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList()) {
+            listeNomsPieces.add(piece.getNom());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listeNomsPieces);
+        ListView listViewPieces = new ListView(this);
+        listViewPieces.setAdapter(adapter);
+
+
+        listViewPieces.setOnItemClickListener((parent, view, position, id) -> {
+            String nomPieceSelectionnee = listeNomsPieces.get(position);
+            if ("Créer une nouvelle pièce".equals(nomPieceSelectionnee)) {
+                Log.i("Info", "Position dans le code : 2");
+                new AlertDialog.Builder(this)
+                        .setTitle("Nouvelle pièce")
+                        .setMessage("Ecrire le nom de la pièce à créer à relier à cette ouverture.")
+                        .setView(input)
+                        .setPositiveButton("Valider", (dialog2, which2) -> {
+                            String nomPiece = input.getText().toString();
+                            if (!nomPiece.isEmpty()) {
+                                Piece p = new Piece(nomPiece);
+                                pieces.add(p);
+                                Ouverture ouverture = new Ouverture(ModeleSingleton.getInstance().getPieceEnCours(), p, rect);
+                                ouvertures.add(ouverture);
+                                Toast.makeText(this, "Ajout de la nouvelle pièce : " + nomPiece, Toast.LENGTH_SHORT).show();
+                                al.dismiss();
+                                //dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("Annuler", (dialog2, which2) -> {
+                            rects.remove(rects.size() - 1);
+                            superposition = true;
+                            dessinRectangle();
+                            al.dismiss();
+                            //dialog.dismiss();
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            } else {
+                // Mettez ici le code pour traiter la pièce existante si nécessaire
+                Piece p = trouverPieceParNom(nomPieceSelectionnee);
+                Ouverture ouverture = new Ouverture(ModeleSingleton.getInstance().getPieceEnCours(), p,rect);
+                ouvertures.add(ouverture);
+                Toast.makeText(this, "Ajout de l'ouverture avec : " + nomPieceSelectionnee, Toast.LENGTH_SHORT).show();
+                al.dismiss();
+
+            }
+        });
+
+         al =new AlertDialog.Builder(this)
+                .setTitle("Nouvelle pièce")
+                .setView(listViewPieces)
                 .setPositiveButton("Valider", (dialog, which) -> {
-                    String nomPiece = input.getText().toString();
-                    Piece p = new Piece(nomPiece);
-                    pieces.add(p);
-                    Ouverture ouverture = new Ouverture(ModeleSingleton.getInstance().getPieceEnCours(), p, rect);
-                    ouvertures.add(ouverture);
-                    Toast.makeText(this, "Ajout de la nouvelle pièce : "+nomPiece, Toast.LENGTH_SHORT).show();
+                    // Code pour traiter le bouton Valider dans la boîte de dialogue principale
                 })
-                .setNegativeButton("Annuler", null)
+                .setNegativeButton("Annuler", (dialog, which) -> {
+                    rects.remove(rects.size() - 1);
+                    superposition = true;
+                    dessinRectangle();
+                })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+
+    }
+
+
+
+    private Piece trouverPieceParNom(String nom) {
+        for (Piece piece : ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList()) {
+            if (piece.getNom().equals(nom)) {
+                return piece;
+            }
+        }
+        return null; // Pièce non trouvée
     }
 
     public void remove0() {
@@ -212,7 +300,11 @@ public class OuvertureActivity extends AppCompatActivity {
     }
 
     public void validerOnClick(View view) {
-        ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().addAll(pieces);
+        for (Piece piece : pieces) {
+            if (!ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().contains(piece)) {
+                ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().add(piece);
+            }
+        }
         updateOuvertures();
         finish();
     }
@@ -237,11 +329,17 @@ public class OuvertureActivity extends AppCompatActivity {
         return false;
     }
     public void verifAjoutPiece() {
-        if (!isEmplacementOccupe(rect)) {
+        Rect imageRect = new Rect();
+        imageView.getHitRect(imageRect);
+        if (!isEmplacementOccupe(rect) && imageRect.contains(rect)) {
             superposition = false;
             rects.add(rect);
             ajoutPiece();
-        } else {
+        }else if(!imageRect.contains(rect)){
+            superposition = true;
+            Toast.makeText(this, "EN DEHORS DE L'IMAGE", Toast.LENGTH_SHORT).show();
+            dessinRectangle();
+        }else if(imageRect.contains(rect) && !!imageRect.contains(rect)){
             // Gérer le cas où il y a une superposition
             superposition = true;
             Toast.makeText(this, "Superposition de rectangles détectée", Toast.LENGTH_SHORT).show();
@@ -251,18 +349,22 @@ public class OuvertureActivity extends AppCompatActivity {
     }
 
     public void supprDerniereOuveture(View view) {
-        rects.remove(rects.size()-1);
-        pieces.remove(pieces.size()-1);
-        ouvertures.remove(ouvertures.size()-1);
-        superposition = true;
-        dessinRectangle();
+        if(rects.size() >=1) {
+            rects.remove(rects.size() - 1);
+            pieces.remove(pieces.size() - 1);
+            ouvertures.remove(ouvertures.size() - 1);
+            superposition = true;
+            dessinRectangle();
+        }
     }
 
     public void supprOuvertures(View view) {
-        rects.clear();
-        pieces.clear();
-        ouvertures.clear();
-        superposition = true;
-        dessinRectangle();
+        if(rects.size() >=1) {
+            rects.clear();
+            pieces.clear();
+            ouvertures.clear();
+            superposition = true;
+            dessinRectangle();
+        }
     }
 }

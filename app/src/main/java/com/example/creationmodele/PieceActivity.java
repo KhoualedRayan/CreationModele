@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -30,6 +31,7 @@ import java.io.IOException;
 
 import habitation.Mur;
 import habitation.Orientation;
+import habitation.Ouverture;
 import habitation.Piece;
 import outils.AccelVectorView;
 import outils.ModeleSingleton;
@@ -124,12 +126,55 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
         prendrePhoto(PHOTO_SUD);
     }
     private void prendrePhoto(int requestCode) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            Toast.makeText(PieceActivity.this, "Prendre une photo", Toast.LENGTH_SHORT).show();
-            startActivityForResult(intent, requestCode);
-            setResult(RESULT_OK, intent);
-        }
+        new AlertDialog.Builder(this)
+                .setTitle("Nouveau Mur")
+                .setMessage("Voulez-vous créer un nouveau mur ou l'éditer ?")
+                .setPositiveButton("Nouveau Mur", (dialog, which) -> {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        Toast.makeText(PieceActivity.this, "Prendre une photo", Toast.LENGTH_SHORT).show();
+                        startActivityForResult(intent, requestCode);
+                        setResult(RESULT_OK, intent);
+                    }
+                })
+                .setNegativeButton("Editer", (dialog, which) -> {
+                    Intent intent = new Intent(this,OuvertureActivity.class);
+                    Bitmap bitmap;
+                    switch (requestCode){
+                        case PHOTO_NORD:
+                            imageView_Nord.buildDrawingCache();
+                            bitmap = Bitmap.createBitmap(imageView_Nord.getDrawingCache());
+                            imageView_Nord.destroyDrawingCache();
+                            intent.putExtra("Mur",ModeleSingleton.getInstance().getPieceEnCours().getMurNord().getNomBitmap());
+                            intent.putExtra("Bitmap",bitmap);
+                            break;
+                        case PHOTO_EST:
+                            imageView_Est.buildDrawingCache();
+                            bitmap = Bitmap.createBitmap(imageView_Est.getDrawingCache());
+                            imageView_Est.destroyDrawingCache();
+                            intent.putExtra("Mur",ModeleSingleton.getInstance().getPieceEnCours().getMurEst().getNomBitmap());
+                            intent.putExtra("Bitmap",bitmap);
+                            break;
+                        case PHOTO_OUEST:
+                            imageView_Ouest.buildDrawingCache();
+                            bitmap = Bitmap.createBitmap(imageView_Ouest.getDrawingCache());
+                            imageView_Ouest.destroyDrawingCache();
+                            intent.putExtra("Mur",ModeleSingleton.getInstance().getPieceEnCours().getMurOuest().getNomBitmap());
+                            intent.putExtra("Bitmap",bitmap);
+                            break;
+                        case PHOTO_SUD:
+                            imageView_Sud.buildDrawingCache();
+                            bitmap = Bitmap.createBitmap(imageView_Sud.getDrawingCache());
+                            imageView_Sud.destroyDrawingCache();
+                            intent.putExtra("Mur",ModeleSingleton.getInstance().getPieceEnCours().getMurSud().getNomBitmap());
+                            intent.putExtra("Bitmap",bitmap);
+                            break;
+                    }
+                    startActivity(intent);
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
     }
 
     public void Valider(View view) {

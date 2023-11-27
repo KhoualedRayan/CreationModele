@@ -51,13 +51,14 @@ public class AccelVectorView extends View {
         float centreY = (float) (getHeight() / 2.5);
 
         canvas.drawLine(centreX, centreY, (x*80+centreX), (y*80+centreY), paint2);
+
         //accelerometre
         float startX = this.getWidth() / 2;
         float startY = this.getHeight() - getHeight() /4;
         float stopX = startX - accel[0] * 50;
         float stopY = startY + accel[1] *50;
 
-        canvas.drawLine(startX, startY, stopX, stopY, paint);
+        //canvas.drawLine(startX, startY, stopX, stopY, paint);
 
     }
 

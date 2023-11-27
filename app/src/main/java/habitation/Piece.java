@@ -1,12 +1,20 @@
 package habitation;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Piece {
+    @JsonManagedReference(value = "piece-murNord")
     private Mur murNord;
+
+    @JsonManagedReference(value = "piece-murEst")
     private Mur murEst;
+
+    @JsonManagedReference(value = "piece-murSud")
     private Mur murSud;
+
+    @JsonManagedReference(value = "piece-murOuest")
     private Mur murOuest;
     private String nom;
     @JsonCreator

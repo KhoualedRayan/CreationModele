@@ -2,8 +2,13 @@ package habitation;
 
 import android.graphics.Rect;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 public class Ouverture {
+    @JsonBackReference(value = "ouverture-pieceDepart")
     private Piece pieceDepart;
+
+    @JsonBackReference(value = "ouverture-pieceArrivee")
     private Piece pieceArrivee;
     private Rect rect;
 
