@@ -19,9 +19,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import habitation.Modele;
+import habitation.Mur;
+import habitation.Ouverture;
 import habitation.Piece;
 import outils.ModeleSingleton;
 
@@ -63,6 +66,7 @@ public class PieceViewHolder extends RecyclerView.ViewHolder implements View.OnC
                 iterator.remove(); // Utiliser l'itérateur pour supprimer l'élément de la liste en toute sécurité.
             }
         }
+
     }
     private void modifPiece(){
         Intent intent = new Intent(context, PieceActivity.class);
