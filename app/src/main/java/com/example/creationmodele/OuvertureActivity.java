@@ -152,7 +152,7 @@ public class OuvertureActivity extends AppCompatActivity {
             piece = ModeleSingleton.getInstance().getPieceEnCours();
             mur = getMurByNom(nomMur);
             for (Ouverture ouverture: ouvertures){
-                pieces.add(ouverture.getPieceArrivee());
+                pieces.add(trouverPieceParNom(ouverture.getPieceArrivee()));
                 rects.add(ouverture.getRect());
             }
             dessinRectangle();
@@ -228,7 +228,7 @@ public class OuvertureActivity extends AppCompatActivity {
                             if (!nomPiece.isEmpty()) {
                                 Piece p = new Piece(nomPiece);
                                 pieces.add(p);
-                                Ouverture ouverture = new Ouverture(ModeleSingleton.getInstance().getPieceEnCours(), p, rect);
+                                Ouverture ouverture = new Ouverture(ModeleSingleton.getInstance().getPieceEnCours().getNom(), p.getNom(), rect);
                                 ouvertures.add(ouverture);
                                 Toast.makeText(this, "Ajout de la nouvelle pièce : " + nomPiece, Toast.LENGTH_SHORT).show();
                                 al.dismiss();
@@ -247,7 +247,7 @@ public class OuvertureActivity extends AppCompatActivity {
             } else {
                 // Mettez ici le code pour traiter la pièce existante si nécessaire
                 Piece p = trouverPieceParNom(nomPieceSelectionnee);
-                Ouverture ouverture = new Ouverture(ModeleSingleton.getInstance().getPieceEnCours(), p,rect);
+                Ouverture ouverture = new Ouverture(ModeleSingleton.getInstance().getPieceEnCours().getNom(), p.getNom(),rect);
                 ouvertures.add(ouverture);
                 Toast.makeText(this, "Ajout de l'ouverture avec : " + nomPieceSelectionnee, Toast.LENGTH_SHORT).show();
                 al.dismiss();
@@ -273,7 +273,7 @@ public class OuvertureActivity extends AppCompatActivity {
 
 
 
-    private Piece trouverPieceParNom(String nom) {
+    public Piece trouverPieceParNom(String nom) {
         for (Piece piece : ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList()) {
             if (piece.getNom().equals(nom)) {
                 return piece;

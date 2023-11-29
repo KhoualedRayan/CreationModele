@@ -1,13 +1,13 @@
 package habitation;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 
 public class Mur {
     private Orientation orientation;
     private String nomBitmap;
-    @JsonBackReference(value = "mur-ouvertures")
     private ArrayList<Ouverture> ouvertures;
 
     public Mur() {

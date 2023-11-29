@@ -3,35 +3,50 @@ package habitation;
 import android.graphics.Rect;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties()
 public class Ouverture {
-    @JsonBackReference(value = "ouverture-pieceDepart")
-    private Piece pieceDepart;
+    //private Piece pieceDepart;
+    /*
+    OUVERTURE NE CONNAIT PAS 2 PIECES MAIS LES NOMS DES 2 PIECES
+    CE QUI RESOUT LE PB DE BOUCLE INFINI LORS DE LA SAVE
+    +
+    FAIRE EN SORTE QUE LE NOM DES PIECES SOIT UNIQUE
+    SOIT PAR UN IDENTIFIANT SECRET AVEC UNE FABRIQUE
+    SOIT EN L'IMPOSANT A L'UTILISATEUR
+    EN LUI DEMANDANDANT UN AUTRE NOM SI IL YA DEJA CELUI CI DANS LA BDD
+    FAIRE UNE FONCTION FINDBYNOM ??
 
-    @JsonBackReference(value = "ouverture-pieceArrivee")
-    private Piece pieceArrivee;
+    */
+    private String pieceArrivee;
+    private String pieceDepart;
+    //private Piece pieceArrivee;
     private Rect rect;
 
-    public Ouverture(Piece pieceDepart, Piece pieceArrivee, Rect rect) {
+    public Ouverture(@JsonProperty("pieceDepart") String pieceDepart, @JsonProperty("pieceArrivee")String pieceArrivee, @JsonProperty("rect") Rect rect) {
         this.pieceDepart = pieceDepart;
         this.pieceArrivee = pieceArrivee;
         this.rect = rect;
     }
 
-    public Piece getPieceDepart() {
-        return pieceDepart;
-    }
-
-    public void setPieceDepart(Piece pieceDepart) {
-        this.pieceDepart = pieceDepart;
-    }
-
-    public Piece getPieceArrivee() {
+    public String getPieceArrivee() {
         return pieceArrivee;
     }
 
-    public void setPieceArrivee(Piece pieceArrivee) {
+    public void setPieceArrivee(String pieceArrivee) {
         this.pieceArrivee = pieceArrivee;
+    }
+
+    public String getPieceDepart() {
+        return pieceDepart;
+    }
+
+    public void setPieceDepart(String pieceDepart) {
+        this.pieceDepart = pieceDepart;
     }
 
     public Rect getRect() {

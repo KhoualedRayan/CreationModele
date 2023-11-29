@@ -5,19 +5,14 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Piece {
-    @JsonManagedReference(value = "piece-murNord")
     private Mur murNord;
 
-    @JsonManagedReference(value = "piece-murEst")
     private Mur murEst;
 
-    @JsonManagedReference(value = "piece-murSud")
     private Mur murSud;
 
-    @JsonManagedReference(value = "piece-murOuest")
     private Mur murOuest;
     private String nom;
-    @JsonCreator
     public Piece(@JsonProperty("nom") String nom) {
         this.murNord = new Mur();
         this.murOuest= new Mur();

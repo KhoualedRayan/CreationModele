@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.creationmodele.R;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
@@ -62,6 +63,8 @@ public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.On
         try {
             // Créer un objet ObjectMapper
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
 
             // Lire le fichier JSON et le convertir en objet de la classe MaClasse
             Modele modeleCharger = objectMapper.readValue(new File(chemin), Modele.class);
