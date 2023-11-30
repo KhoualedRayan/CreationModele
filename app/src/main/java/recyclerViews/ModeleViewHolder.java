@@ -57,6 +57,8 @@ public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.On
         }else {
             Log.i("CHARGEMENT_MODELE","ECHEC SUPPRESSION DU FICHIER");
         }
+
+
     }
     private void chargerModele(){
         String chemin = "/data/user/0/com.example.creationmodele/files/"+nom.getText().toString();
@@ -68,7 +70,6 @@ public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.On
 
             // Lire le fichier JSON et le convertir en objet de la classe MaClasse
             Modele modeleCharger = objectMapper.readValue(new File(chemin), Modele.class);
-            Log.i("YOYOYOYOYO",modeleCharger.toString());
             ModeleSingleton.getInstance().getModeleInstance().remplacementModele(modeleCharger);
 
         } catch (IOException e) {

@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CreationModele</string>
+    <string name="CreationModele">Create a model</string>
+    <string name="ReprendreModele">Reload a model</string>
+    <string name="CreerModele">Create a new model</string>
+    <string name="NomModele">Name of the model :</string>
+    <string name="nomModele">Write the name of the new modele here.</string>
+    <string name="nouveauModeleWarning">WARNING! UNSAVED DATA FROM THE CURRENT MODEL WILL BE LOST!</string>
+    <string name="EditionModele">Edit the current model</string>
+    <string name="ModeleActuel">The actual model is :</string>
+    <string name="SauvergarderModele">Save the model</string>
+    <string name="Nom">Name</string>
+    <string name="AjouterPiece">Add a room</string>
+    <string name="Nord">North</string>
+    <string name="Est">Est</string>
+    <string name="Ouest">West</string>
+    <string name="Sud">South</string>
+    <string name="Valider">Validate</string>
+    <string name="SupprOuvertures">Delete all the openings</string>
+    <string name="SupprLastOuverture">Delete the last opening</string>
 </resources>
