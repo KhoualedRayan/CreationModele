@@ -10,18 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties()
 public class Ouverture {
-    //private Piece pieceDepart;
-    /*
-    OUVERTURE NE CONNAIT PAS 2 PIECES MAIS LES NOMS DES 2 PIECES
-    CE QUI RESOUT LE PB DE BOUCLE INFINI LORS DE LA SAVE
-    +
-    FAIRE EN SORTE QUE LE NOM DES PIECES SOIT UNIQUE
-    SOIT PAR UN IDENTIFIANT SECRET AVEC UNE FABRIQUE
-    SOIT EN L'IMPOSANT A L'UTILISATEUR
-    EN LUI DEMANDANDANT UN AUTRE NOM SI IL YA DEJA CELUI CI DANS LA BDD
-    FAIRE UNE FONCTION FINDBYNOM ??
 
-    */
     private String pieceArrivee;
     private String pieceDepart;
     //private Piece pieceArrivee;
