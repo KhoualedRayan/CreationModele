@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -24,12 +25,12 @@ public class ChargementModele extends AppCompatActivity {
     }
 
     private void initModeles(){
-        String cheminDossier = "/data/user/0/com.example.creationmodele/files";
-        // Créez un objet File pour représenter le dossier
-        File dossier = new File(cheminDossier);
+        File dossier = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
+        Log.i("Chargement modele",dossier.getAbsolutePath());
         if (dossier.isDirectory()) {
             // Obtenez la liste des fichiers dans le dossier
             File[] fichiers = dossier.listFiles();
+            Log.i("Chargement modele", String.valueOf(fichiers.length));
 
             // Parcourez les fichiers et affichez ceux avec l'extension .json
             if (fichiers != null) {

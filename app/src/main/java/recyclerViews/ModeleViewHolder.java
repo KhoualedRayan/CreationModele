@@ -2,6 +2,7 @@ package recyclerViews;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 
 import habitation.Modele;
+import habitation.Piece;
 import outils.ModeleSingleton;
 
 public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -49,9 +51,11 @@ public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     private void supprimerModele(){
-        String chemin = "/data/user/0/com.example.creationmodele/files/"+nom.getText().toString();
+        File dossier = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
+        String chemin = dossier.getAbsolutePath()+"/"+nom.getText().toString();
         // Créez un objet File pour représenter le dossier
         File fichier = new File(chemin);
+
         if(fichier.delete()){
             Log.i("CHARGEMENT_MODELE",fichier.getName()+" est supprimé");
         }else {
@@ -61,7 +65,8 @@ public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.On
 
     }
     private void chargerModele(){
-        String chemin = "/data/user/0/com.example.creationmodele/files/"+nom.getText().toString();
+        File dossier = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
+        String chemin = dossier.getAbsolutePath()+"/"+nom.getText().toString();
         try {
             // Créer un objet ObjectMapper
             ObjectMapper objectMapper = new ObjectMapper();

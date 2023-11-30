@@ -15,6 +15,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.provider.MediaStore;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -187,29 +189,36 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
         finish();
     }
     public void showImageOnCreate(){
+        File dossier = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
         FileInputStream fis = null;
         try {
+            File filesDir = getFilesDir();
+            Log.i("PIECE ACTIVITY", "Chemin du dossier : " + filesDir.getAbsolutePath());
             if(piece.getMurNord().getNomBitmap() != null){
                 Log.i("PIECE ACTIVITY",piece.getMurNord().getNomBitmap() );
-                fis = openFileInput(piece.getMurNord().getNomBitmap());
+                String chemin = dossier.getAbsolutePath()+"/"+piece.getMurNord().getNomBitmap();
+                fis = new FileInputStream(new File(chemin));
                 Bitmap bm = BitmapFactory.decodeStream(fis);
                 imageView_Nord.setImageBitmap(bm);
             }
             if(piece.getMurEst().getNomBitmap() != null){
                 Log.i("PIECE ACTIVITY",piece.getMurEst().getNomBitmap() );
-                fis = openFileInput(piece.getMurEst().getNomBitmap());
+                String chemin = dossier.getAbsolutePath()+"/"+piece.getMurEst().getNomBitmap();
+                fis = new FileInputStream(new File(chemin));
                 Bitmap bm = BitmapFactory.decodeStream(fis);
                 imageView_Est.setImageBitmap(bm);
             }
             if(piece.getMurOuest().getNomBitmap() != null){
                 Log.i("PIECE ACTIVITY",piece.getMurOuest().getNomBitmap() );
-                fis = openFileInput(piece.getMurOuest().getNomBitmap());
+                String chemin = dossier.getAbsolutePath()+"/"+piece.getMurOuest().getNomBitmap();
+                fis = new FileInputStream(new File(chemin));
                 Bitmap bm = BitmapFactory.decodeStream(fis);
                 imageView_Ouest.setImageBitmap(bm);
             }
             if(piece.getMurSud().getNomBitmap() != null){
                 Log.i("PIECE ACTIVITY",piece.getMurSud().getNomBitmap() );
-                fis = openFileInput(piece.getMurSud().getNomBitmap());
+                String chemin = dossier.getAbsolutePath()+"/"+piece.getMurSud().getNomBitmap();
+                fis = new FileInputStream(new File(chemin));
                 Bitmap bm = BitmapFactory.decodeStream(fis);
                 imageView_Sud.setImageBitmap(bm);
             }
@@ -220,11 +229,17 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
     }    
     public void showImage(Mur m){
         FileInputStream fis = null;
-        Intent intent = new Intent(this,OuvertureActivity.class);
+        Intent intent = new Intent(this, OuvertureActivity.class);
+
         try {
-            fis = openFileInput(m.getNomBitmap());
+            File dossier = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
+            String chemin = dossier.getAbsolutePath() + "/" + m.getNomBitmap();
+
+            fis = new FileInputStream(new File(chemin));
+
             Bitmap bm = BitmapFactory.decodeStream(fis);
-            switch (m.getOrientation()){
+
+            switch (m.getOrientation()) {
                 case EST:
                     imageView_Est.setImageBitmap(bm);
                     break;
@@ -238,12 +253,14 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
                     imageView_Ouest.setImageBitmap(bm);
                     break;
             }
-            intent.putExtra("Bitmap",bm);
-            intent.putExtra("Mur",m.getNomBitmap());
+
+            intent.putExtra("Bitmap", bm);
+            intent.putExtra("Mur", m.getNomBitmap());
             startActivity(intent);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
         
     }
 
@@ -254,40 +271,41 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
             Bundle extras = data.getExtras();
             Bitmap imageBitMap = (Bitmap) extras.get("data");
             FileOutputStream fos;
-            String name ="";
+            String name =ModeleSingleton.getInstance().getModeleInstance().getNom();
             Mur mur = new Mur();
             try {
                 switch (requestCode){
                     case PHOTO_NORD:
-                        name = piece.getNom()+"_Nord";
+                        name += piece.getNom()+"_Nord";
                         mur.setNomBitmap(name);
                         mur.setOrientation(Orientation.NORD);
                         piece.setMurNord(mur);
                         ModeleSingleton.getInstance().getPieceEnCours().setMurNord(mur);
                         break;
                     case PHOTO_EST:
-                        name = piece.getNom()+"_Est";
+                        name += piece.getNom()+"_Est";
                         mur.setNomBitmap(name);
                         mur.setOrientation(Orientation.EST);
                         ModeleSingleton.getInstance().getPieceEnCours().setMurEst(mur);
                         piece.setMurEst(mur);
                         break;
                     case PHOTO_OUEST:
-                        name = piece.getNom()+"_Ouest";
+                        name += piece.getNom()+"_Ouest";
                         mur.setNomBitmap(name);
                         mur.setOrientation(Orientation.OUEST);
                         ModeleSingleton.getInstance().getPieceEnCours().setMurOuest(mur);
                         piece.setMurOuest(mur);
                         break;
                     case PHOTO_SUD:
-                        name = piece.getNom()+"_Sud";
+                        name += piece.getNom()+"_Sud";
                         mur.setNomBitmap(name);
                         mur.setOrientation(Orientation.SUD);
                         ModeleSingleton.getInstance().getPieceEnCours().setMurSud(mur);
                         piece.setMurSud(mur);
                         break;
                 }
-                fos = openFileOutput(name, MODE_PRIVATE);
+                File dossier = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
+                fos = new FileOutputStream(new File(dossier, name));
                 imageBitMap.compress(Bitmap.CompressFormat.PNG, 100, fos);
                 fos.flush();
                 Log.i("PIECE ACTIVITY",mur.toString());
