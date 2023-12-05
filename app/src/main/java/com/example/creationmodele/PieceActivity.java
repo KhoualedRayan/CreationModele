@@ -189,7 +189,8 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
         finish();
     }
     public void showImageOnCreate(){
-        File dossier = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
+        File chemindoss = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
+        File dossier = new File(chemindoss,ModeleSingleton.getInstance().getModeleInstance().getNom());
         FileInputStream fis = null;
         try {
             File filesDir = getFilesDir();
@@ -232,7 +233,8 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
         Intent intent = new Intent(this, OuvertureActivity.class);
 
         try {
-            File dossier = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
+            File chemindoss = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
+            File dossier = new File(chemindoss, ModeleSingleton.getInstance().getModeleInstance().getNom());
             String chemin = dossier.getAbsolutePath() + "/" + m.getNomBitmap();
 
             fis = new FileInputStream(new File(chemin));
@@ -304,11 +306,13 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
                         piece.setMurSud(mur);
                         break;
                 }
-                File dossier = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
+                File chemin = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
+                File dossier = new File(chemin, ModeleSingleton.getInstance().getModeleInstance().getNom());
                 fos = new FileOutputStream(new File(dossier, name));
                 imageBitMap.compress(Bitmap.CompressFormat.PNG, 100, fos);
                 fos.flush();
                 Log.i("PIECE ACTIVITY",mur.toString());
+                ModeleSingleton.getInstance().getModeleInstance().getAllBitmaps().add(name);
                 showImage(mur);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

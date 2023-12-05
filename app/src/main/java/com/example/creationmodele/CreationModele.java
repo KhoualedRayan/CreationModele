@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import java.io.File;
 
 import outils.ModeleSingleton;
 
@@ -24,8 +27,16 @@ public class CreationModele extends AppCompatActivity {
             ModeleSingleton.getInstance().clear();
             ModeleSingleton.getInstance().getModeleInstance().setNom(editText.getText().toString());
             Log.i("CREATION_MODELE",editText.getText().toString());
-            Intent intent = new Intent(CreationModele.this,MainActivity.class);
-            startActivity(intent);
+            File repertoireExterne = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File dossierJson = new File(repertoireExterne, "DossierJSON");
+            if (!dossierJson.exists()) {
+                dossierJson.mkdirs();
+            }
+            File dossierJson2 = new File(dossierJson, ModeleSingleton.getInstance().getModeleInstance().getNom());
+            if (!dossierJson2.exists()) {
+                dossierJson2.mkdirs();
+            }
+            finish();
         }else {
             new AlertDialog.Builder(this)
                     .setTitle("Nom invalide")

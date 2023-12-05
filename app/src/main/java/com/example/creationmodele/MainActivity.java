@@ -68,34 +68,6 @@ public class MainActivity extends AppCompatActivity {
                     .show();
         }
     }
-    /*private void save(){
-        try {
-            Context context = this;
-            // Créer un objet ObjectMapper
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            // Convertir l'objet en format JSON
-            String json = objectMapper.writeValueAsString(ModeleSingleton.getInstance().getModeleInstance());
-
-            // Spécifier le nom du fichier
-            String nomFichier = ModeleSingleton.getInstance().getModeleInstance().getNom() + ".json";
-
-            // Obtenir le répertoire de stockage interne de l'application
-            File repertoireInterne = context.getFilesDir();
-
-            // Créer un objet File pour le fichier de destination
-            File fichierDestination = new File(repertoireInterne, nomFichier);
-
-            // Écrire le JSON dans le fichier de destination
-            try (FileOutputStream fos = new FileOutputStream(fichierDestination)) {
-                fos.write(json.getBytes());
-            }
-            Log.i("MainACTIVITY : ", "Sauvegarde en JSON réussie dans : " + fichierDestination.getAbsolutePath());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
     private void save() {
         try {
             // Créer un objet ObjectMapper
@@ -114,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
             File dossierJson = new File(repertoireExterne, "DossierJSON");
             if (!dossierJson.exists()) {
                 dossierJson.mkdirs();
+            }
+            File dossierJson2 = new File(dossierJson, ModeleSingleton.getInstance().getModeleInstance().getNom());
+            if (!dossierJson2.exists()) {
+                dossierJson2.mkdirs();
             }
 
             // Créer un objet File pour le fichier de destination dans le dossier créé
