@@ -32,10 +32,6 @@ public class CreationModele extends AppCompatActivity {
             if (!dossierJson.exists()) {
                 dossierJson.mkdirs();
             }
-            File dossierJson2 = new File(dossierJson, ModeleSingleton.getInstance().getModeleInstance().getNom());
-            if (!dossierJson2.exists()) {
-                dossierJson2.mkdirs();
-            }
             finish();
         }else {
             new AlertDialog.Builder(this)

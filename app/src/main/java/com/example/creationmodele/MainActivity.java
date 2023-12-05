@@ -87,10 +87,6 @@ public class MainActivity extends AppCompatActivity {
             if (!dossierJson.exists()) {
                 dossierJson.mkdirs();
             }
-            File dossierJson2 = new File(dossierJson, ModeleSingleton.getInstance().getModeleInstance().getNom());
-            if (!dossierJson2.exists()) {
-                dossierJson2.mkdirs();
-            }
 
             // Créer un objet File pour le fichier de destination dans le dossier créé
             File fichierDestination = new File(dossierJson, nomFichier);
