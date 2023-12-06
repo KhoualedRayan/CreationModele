@@ -155,7 +155,7 @@ public class OuvertureActivity extends AppCompatActivity {
                 pieces.add(trouverPieceParNom(ouverture.getPieceArrivee()));
                 rects.add(ouverture.getRect());
             }
-            dessinRectangle();
+
             Log.i("OUVERTURE ACTIVITY", mur.getNomBitmap());
             Log.i("OUVERTURE ACTIVITY", piece.toString());
         }
@@ -179,7 +179,13 @@ public class OuvertureActivity extends AppCompatActivity {
         }
         return new Mur();
     }
-
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            dessinRectangle();
+        }
+    }
 
     public void dessinRectangle() {
         Rect imageRect = new Rect();
@@ -328,8 +334,6 @@ public class OuvertureActivity extends AppCompatActivity {
     }
     public void verifAjoutPiece() {
         Rect imageRect = new Rect();
-        int nbouv = ouvertures.size();
-        int nbrect = rects.size();
         imageView.getHitRect(imageRect);
         if (!isEmplacementOccupe(rect) && imageRect.contains(rect)) {
             superposition = false;
