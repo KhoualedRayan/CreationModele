@@ -141,43 +141,58 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
                     }
                 })
                 .setNegativeButton("Editer", (dialog, which) -> {
-                    Intent intent = new Intent(this,OuvertureActivity.class);
-                    Bitmap bitmap;
-                    switch (requestCode){
-                        case PHOTO_NORD:
-                            imageView_Nord.buildDrawingCache();
-                            bitmap = Bitmap.createBitmap(imageView_Nord.getDrawingCache());
-                            imageView_Nord.destroyDrawingCache();
-                            intent.putExtra("Mur",ModeleSingleton.getInstance().getPieceEnCours().getMurNord().getNomBitmap());
-                            intent.putExtra("Bitmap",bitmap);
-                            break;
-                        case PHOTO_EST:
-                            imageView_Est.buildDrawingCache();
-                            bitmap = Bitmap.createBitmap(imageView_Est.getDrawingCache());
-                            imageView_Est.destroyDrawingCache();
-                            intent.putExtra("Mur",ModeleSingleton.getInstance().getPieceEnCours().getMurEst().getNomBitmap());
-                            intent.putExtra("Bitmap",bitmap);
-                            break;
-                        case PHOTO_OUEST:
-                            imageView_Ouest.buildDrawingCache();
-                            bitmap = Bitmap.createBitmap(imageView_Ouest.getDrawingCache());
-                            imageView_Ouest.destroyDrawingCache();
-                            intent.putExtra("Mur",ModeleSingleton.getInstance().getPieceEnCours().getMurOuest().getNomBitmap());
-                            intent.putExtra("Bitmap",bitmap);
-                            break;
-                        case PHOTO_SUD:
-                            imageView_Sud.buildDrawingCache();
-                            bitmap = Bitmap.createBitmap(imageView_Sud.getDrawingCache());
-                            imageView_Sud.destroyDrawingCache();
-                            intent.putExtra("Mur",ModeleSingleton.getInstance().getPieceEnCours().getMurSud().getNomBitmap());
-                            intent.putExtra("Bitmap",bitmap);
-                            break;
-                    }
-                    startActivity(intent);
+                    edit(requestCode);
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
 
+    }
+    public void edit(int requestCode){
+        Intent intent = new Intent(this,OuvertureActivity.class);
+        Bitmap bitmap;
+        switch (requestCode){
+            case PHOTO_NORD:
+                if(ModeleSingleton.getInstance().getPieceEnCours().getMurNord().getBytes() == null){
+                    return;
+                }
+                imageView_Nord.buildDrawingCache();
+                bitmap = Bitmap.createBitmap(imageView_Nord.getDrawingCache());
+                imageView_Nord.destroyDrawingCache();
+                intent.putExtra("Mur",ModeleSingleton.getInstance().getPieceEnCours().getMurNord().getNomBitmap());
+                intent.putExtra("Bitmap",bitmap);
+                break;
+            case PHOTO_EST:
+                if(ModeleSingleton.getInstance().getPieceEnCours().getMurEst().getBytes() == null){
+                    return;
+                }
+                imageView_Est.buildDrawingCache();
+                bitmap = Bitmap.createBitmap(imageView_Est.getDrawingCache());
+                imageView_Est.destroyDrawingCache();
+                intent.putExtra("Mur",ModeleSingleton.getInstance().getPieceEnCours().getMurEst().getNomBitmap());
+                intent.putExtra("Bitmap",bitmap);
+                break;
+            case PHOTO_OUEST:
+                if(ModeleSingleton.getInstance().getPieceEnCours().getMurOuest().getBytes() == null){
+                    return;
+                }
+                imageView_Ouest.buildDrawingCache();
+                bitmap = Bitmap.createBitmap(imageView_Ouest.getDrawingCache());
+                imageView_Ouest.destroyDrawingCache();
+                intent.putExtra("Mur",ModeleSingleton.getInstance().getPieceEnCours().getMurOuest().getNomBitmap());
+                intent.putExtra("Bitmap",bitmap);
+                break;
+            case PHOTO_SUD:
+                if(ModeleSingleton.getInstance().getPieceEnCours().getMurSud().getBytes() == null){
+                    return;
+                }
+                imageView_Sud.buildDrawingCache();
+                bitmap = Bitmap.createBitmap(imageView_Sud.getDrawingCache());
+                imageView_Sud.destroyDrawingCache();
+                intent.putExtra("Mur",ModeleSingleton.getInstance().getPieceEnCours().getMurSud().getNomBitmap());
+                intent.putExtra("Bitmap",bitmap);
+                break;
+        }
+        startActivity(intent);
     }
 
     public void Valider(View view) {

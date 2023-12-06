@@ -77,7 +77,7 @@ public class OuvertureActivity extends AppCompatActivity {
                         break;
                     case MotionEvent.ACTION_POINTER_DOWN:
                         motionPointerDownHandler(motionEvent,pointerId);
-                        break; // Ajout du break ici
+                        break;
                     case MotionEvent.ACTION_UP:
                         motionUpHandler(motionEvent);
                         break;
@@ -214,7 +214,6 @@ public class OuvertureActivity extends AppCompatActivity {
         ListView listViewPieces = new ListView(this);
         listViewPieces.setAdapter(adapter);
 
-
         listViewPieces.setOnItemClickListener((parent, view, position, id) -> {
             String nomPieceSelectionnee = listeNomsPieces.get(position);
             if ("Créer une nouvelle pièce".equals(nomPieceSelectionnee)) {
@@ -232,7 +231,6 @@ public class OuvertureActivity extends AppCompatActivity {
                                 ouvertures.add(ouverture);
                                 Toast.makeText(this, "Ajout de la nouvelle pièce : " + nomPiece, Toast.LENGTH_SHORT).show();
                                 al.dismiss();
-                                //dialog.dismiss();
                             }
                         })
                         .setNegativeButton("Annuler", (dialog2, which2) -> {
@@ -240,7 +238,6 @@ public class OuvertureActivity extends AppCompatActivity {
                             superposition = true;
                             dessinRectangle();
                             al.dismiss();
-                            //dialog.dismiss();
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
@@ -248,6 +245,7 @@ public class OuvertureActivity extends AppCompatActivity {
                 // Mettez ici le code pour traiter la pièce existante si nécessaire
                 Piece p = trouverPieceParNom(nomPieceSelectionnee);
                 Ouverture ouverture = new Ouverture(ModeleSingleton.getInstance().getPieceEnCours().getNom(), p.getNom(),rect);
+                pieces.add(p);
                 ouvertures.add(ouverture);
                 Toast.makeText(this, "Ajout de l'ouverture avec : " + nomPieceSelectionnee, Toast.LENGTH_SHORT).show();
                 al.dismiss();
@@ -330,6 +328,8 @@ public class OuvertureActivity extends AppCompatActivity {
     }
     public void verifAjoutPiece() {
         Rect imageRect = new Rect();
+        int nbouv = ouvertures.size();
+        int nbrect = rects.size();
         imageView.getHitRect(imageRect);
         if (!isEmplacementOccupe(rect) && imageRect.contains(rect)) {
             superposition = false;
@@ -346,13 +346,16 @@ public class OuvertureActivity extends AppCompatActivity {
             // Redessiner avec la liste mise à jour des rectangles
             dessinRectangle();
         }
+
     }
 
     public void supprDerniereOuveture(View view) {
         if(rects.size() >=1) {
             rects.remove(rects.size() - 1);
-            pieces.remove(pieces.size() - 1);
-            ouvertures.remove(ouvertures.size() - 1);
+            if(pieces.size()>0)
+                pieces.remove(pieces.size() - 1);
+            if(ouvertures.size()>0)
+                ouvertures.remove(ouvertures.size() - 1);
             superposition = true;
             dessinRectangle();
         }
