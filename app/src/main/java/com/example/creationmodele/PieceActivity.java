@@ -136,7 +136,7 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
         new AlertDialog.Builder(this)
                 .setTitle("Nouveau Mur")
                 .setMessage("Voulez-vous créer un nouveau mur ou l'éditer ?")
-                .setPositiveButton("Nouveau Mur", (dialog, which) -> {
+                .setNegativeButton("Créer", (dialog, which) -> {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (intent.resolveActivity(getPackageManager()) != null) {
                         Toast.makeText(PieceActivity.this, "Prendre une photo", Toast.LENGTH_SHORT).show();
@@ -144,7 +144,7 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
                         setResult(RESULT_OK, intent);
                     }
                 })
-                .setNegativeButton("Editer", (dialog, which) -> {
+                .setPositiveButton("Editer", (dialog, which) -> {
                     edit(requestCode);
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)

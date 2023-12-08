@@ -18,6 +18,6 @@
     <string name="Sud">Sud</string>
     <string name="Valider">Valider</string>
     <string name="SupprOuvertures">Supprimer toutes les ouvertures</string>
-    <string name="SupprLastOuverture">Supprimer la denère ouverture</string>
+    <string name="SupprLastOuverture">Supprimer la dernière ouverture</string>
 
 </resources>

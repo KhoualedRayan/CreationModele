@@ -117,6 +117,7 @@ public class OuvertureActivity extends AppCompatActivity {
             rect.sort();
             Log.i("Select Activity", rect.toString());
             dessinRectangle();
+            dessin = true;
         }
         Log.i("Select Activity", list.toString());
     }
@@ -187,6 +188,7 @@ public class OuvertureActivity extends AppCompatActivity {
         }
     }
 
+
     public void dessinRectangle() {
         Rect imageRect = new Rect();
         imageView.getHitRect(imageRect);
@@ -202,7 +204,7 @@ public class OuvertureActivity extends AppCompatActivity {
             } finally {
                 surfaceView.getHolder().unlockCanvasAndPost(canvas);
             }
-            dessin = true;
+            dessin = false;
         }
 
     }
@@ -223,6 +225,7 @@ public class OuvertureActivity extends AppCompatActivity {
         listViewPieces.setOnItemClickListener((parent, view, position, id) -> {
             String nomPieceSelectionnee = listeNomsPieces.get(position);
             if ("Créer une nouvelle pièce".equals(nomPieceSelectionnee)) {
+                al.dismiss();
                 Log.i("Info", "Position dans le code : 2");
                 new AlertDialog.Builder(this)
                         .setTitle("Nouvelle pièce")
@@ -243,7 +246,7 @@ public class OuvertureActivity extends AppCompatActivity {
                             rects.remove(rects.size() - 1);
                             superposition = true;
                             dessinRectangle();
-                            al.dismiss();
+                            //al.dismiss();
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
@@ -254,7 +257,7 @@ public class OuvertureActivity extends AppCompatActivity {
                 pieces.add(p);
                 ouvertures.add(ouverture);
                 Toast.makeText(this, "Ajout de l'ouverture avec : " + nomPieceSelectionnee, Toast.LENGTH_SHORT).show();
-                al.dismiss();
+                //al.dismiss();
 
             }
         });
@@ -262,14 +265,7 @@ public class OuvertureActivity extends AppCompatActivity {
          al =new AlertDialog.Builder(this)
                 .setTitle("Nouvelle pièce")
                 .setView(listViewPieces)
-                .setPositiveButton("Valider", (dialog, which) -> {
-                    // Code pour traiter le bouton Valider dans la boîte de dialogue principale
-                })
-                .setNegativeButton("Annuler", (dialog, which) -> {
-                    rects.remove(rects.size() - 1);
-                    superposition = true;
-                    dessinRectangle();
-                })
+
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
 

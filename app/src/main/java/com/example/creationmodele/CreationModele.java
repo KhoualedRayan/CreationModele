@@ -32,7 +32,9 @@ public class CreationModele extends AppCompatActivity {
             if (!dossierJson.exists()) {
                 dossierJson.mkdirs();
             }
+            setResult(2);
             finish();
+
         }else {
             new AlertDialog.Builder(this)
                     .setTitle("Nom invalide")

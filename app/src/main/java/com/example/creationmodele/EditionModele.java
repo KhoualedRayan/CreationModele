@@ -67,12 +67,10 @@ public class EditionModele extends AppCompatActivity {
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.i("YO REFRESH","REFRESH§§§");
         if(requestCode==1){
             pieces.clear();
             initPieces();
         }
-
     }
     private void initPieces(){
         for (Piece p : ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList()){

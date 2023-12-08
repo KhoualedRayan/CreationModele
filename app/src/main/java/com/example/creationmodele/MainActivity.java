@@ -1,7 +1,9 @@
 package com.example.creationmodele;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,13 +28,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button creerModele = findViewById(R.id.button_creation_modele);
         Button chargerModele = findViewById(R.id.button_charger_modele);
 
-        sendIntent(creerModele,CreationModele.class);
         sendIntent(chargerModele,ChargementModele.class);
-
-
     }
     public void sendIntent(Button button, Class c){
         button.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2) {
+            Intent i = new Intent(MainActivity.this, EditionModele.class);
+            startActivity(i);
+        }
     }
 
     public void SauvegarderModele(View view) {
@@ -117,5 +123,10 @@ public class MainActivity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
+    }
+
+    public void creerModele(View view) {
+        Intent i = new Intent(MainActivity.this, CreationModele.class);
+        startActivityForResult(i,2);
     }
 }
