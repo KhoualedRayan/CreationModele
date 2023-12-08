@@ -24,6 +24,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -43,6 +44,8 @@ import recyclerViews.AdaptateurPiece;
 
 public class OuvertureActivity extends AppCompatActivity {
     private ImageView imageView;
+    private Button lastOp;
+    private Button allOP;
     private int x,y,x1,y1;
     private ArrayList<Integer> list;
     private Rect rect;
@@ -128,6 +131,8 @@ public class OuvertureActivity extends AppCompatActivity {
     }
     public void init(){
         imageView = findViewById(R.id.imageView_MurEdit);
+        lastOp = findViewById(R.id.button_derniereOuverture);
+        allOP = findViewById(R.id.button_supprOuvertures);
         pieces = new ArrayList<>();
         ouvertures = new ArrayList<>();
         rects = new ArrayList<>();
@@ -184,7 +189,27 @@ public class OuvertureActivity extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            dessinRectangle();
+            if(ouvertures.size()==0){
+                lastOp.setVisibility(View.INVISIBLE);
+                allOP.setVisibility(View.INVISIBLE);
+            }else {
+                lastOp.setVisibility(View.VISIBLE);
+                allOP.setVisibility(View.VISIBLE);
+            }
+            affichageRect();
+        }
+    }
+    public void affichageRect(){
+        canvas = surfaceView.getHolder().lockCanvas();
+        if (canvas != null) {
+            try {
+                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR); // Efface le contenu précédent
+                for (Rect r : rects)
+                    canvas.drawRect(r, paint);
+            } finally {
+                surfaceView.getHolder().unlockCanvasAndPost(canvas);
+            }
+            dessin = false;
         }
     }
 
@@ -236,17 +261,14 @@ public class OuvertureActivity extends AppCompatActivity {
                             if (!nomPiece.isEmpty()) {
                                 Piece p = new Piece(nomPiece);
                                 pieces.add(p);
+                                rects.add(rect);
                                 Ouverture ouverture = new Ouverture(ModeleSingleton.getInstance().getPieceEnCours().getNom(), p.getNom(), rect);
                                 ouvertures.add(ouverture);
                                 Toast.makeText(this, "Ajout de la nouvelle pièce : " + nomPiece, Toast.LENGTH_SHORT).show();
-                                al.dismiss();
                             }
                         })
                         .setNegativeButton("Annuler", (dialog2, which2) -> {
-                            rects.remove(rects.size() - 1);
-                            superposition = true;
-                            dessinRectangle();
-                            //al.dismiss();
+
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
@@ -255,10 +277,10 @@ public class OuvertureActivity extends AppCompatActivity {
                 Piece p = trouverPieceParNom(nomPieceSelectionnee);
                 Ouverture ouverture = new Ouverture(ModeleSingleton.getInstance().getPieceEnCours().getNom(), p.getNom(),rect);
                 pieces.add(p);
+                rects.add(rect);
                 ouvertures.add(ouverture);
                 Toast.makeText(this, "Ajout de l'ouverture avec : " + nomPieceSelectionnee, Toast.LENGTH_SHORT).show();
-                //al.dismiss();
-
+                al.dismiss();
             }
         });
 
@@ -268,7 +290,6 @@ public class OuvertureActivity extends AppCompatActivity {
 
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
-
     }
 
 
@@ -333,7 +354,7 @@ public class OuvertureActivity extends AppCompatActivity {
         imageView.getHitRect(imageRect);
         if (!isEmplacementOccupe(rect) && imageRect.contains(rect)) {
             superposition = false;
-            rects.add(rect);
+            //rects.add(rect);
             ajoutPiece();
         }else if(!imageRect.contains(rect)){
             superposition = true;
@@ -358,6 +379,7 @@ public class OuvertureActivity extends AppCompatActivity {
                 ouvertures.remove(ouvertures.size() - 1);
             superposition = true;
             dessinRectangle();
+            onWindowFocusChanged(true);
         }
     }
 
@@ -368,6 +390,8 @@ public class OuvertureActivity extends AppCompatActivity {
             ouvertures.clear();
             superposition = true;
             dessinRectangle();
+            onWindowFocusChanged(true);
+
         }
     }
 }
