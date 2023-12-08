@@ -1,5 +1,6 @@
 package recyclerViews;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -64,15 +65,17 @@ public class PieceViewHolder extends RecyclerView.ViewHolder implements View.OnC
             Piece p = iterator.next();
             if (p.getNom().equals(nom.getText().toString())) {
                 iterator.remove(); // Utiliser l'itérateur pour supprimer l'élément de la liste en toute sécurité.
+                break;
             }
         }
+        ((Activity) context).recreate();
 
     }
     private void modifPiece(){
         Intent intent = new Intent(context, PieceActivity.class);
         nom.setInputType(InputType.TYPE_CLASS_TEXT );
         intent.putExtra("nomPiece",nom.getText().toString());
-        context.startActivity(intent);
+        ((Activity) context).startActivityForResult(intent, 1);
         Log.i("Chargement Piece",nom.getText().toString());
 
     }

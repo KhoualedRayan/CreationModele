@@ -67,8 +67,12 @@ public class EditionModele extends AppCompatActivity {
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        pieces.clear();
-        initPieces();
+        Log.i("YO REFRESH","REFRESH§§§");
+        if(requestCode==1){
+            pieces.clear();
+            initPieces();
+        }
+
     }
     private void initPieces(){
         for (Piece p : ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList()){
@@ -77,7 +81,7 @@ public class EditionModele extends AppCompatActivity {
         Log.i("EDITION MODELE NB PIECES", String.valueOf(ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().size()));
         AdaptateurPiece ad = new AdaptateurPiece(pieces);
         RecyclerView rc = findViewById(R.id.recylcerView_Pieces);
-        rc.setHasFixedSize(true);
+        rc.setHasFixedSize(false);
         rc.setLayoutManager(new LinearLayoutManager(this));
         rc.setAdapter(ad);
     }

@@ -2,6 +2,8 @@ package com.example.creationmodele;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -31,6 +33,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import habitation.Mur;
 import habitation.Orientation;
@@ -38,6 +41,7 @@ import habitation.Ouverture;
 import habitation.Piece;
 import outils.AccelVectorView;
 import outils.ModeleSingleton;
+import recyclerViews.AdaptateurPiece;
 
 public class PieceActivity extends AppCompatActivity implements SensorEventListener {
     private Switch capteur;
@@ -202,6 +206,7 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
             ModeleSingleton.getInstance().getModeleInstance().ajouterPiece(ModeleSingleton.getInstance().getPieceEnCours());
         Log.i("PIECE ACTIVITY", ModeleSingleton.getInstance().getModeleInstance().getNom());
         Log.i("PIECE ACTIVITY", String.valueOf(ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().size()));
+        setResult(1);
         finish();
     }
     public void showImageOnCreate(){
