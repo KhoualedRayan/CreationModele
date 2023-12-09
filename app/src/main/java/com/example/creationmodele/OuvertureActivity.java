@@ -1,11 +1,8 @@
 package com.example.creationmodele;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,7 +11,7 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -26,21 +23,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import habitation.Modele;
 import habitation.Mur;
 import habitation.Ouverture;
 import habitation.Piece;
 import outils.ModeleSingleton;
-import recyclerViews.AdaptateurPiece;
 
 public class OuvertureActivity extends AppCompatActivity {
     private ImageView imageView;
@@ -200,16 +197,63 @@ public class OuvertureActivity extends AppCompatActivity {
         }
     }
     public void affichageRect(){
+        enleverAnciensEtiquettes();
+        enleverAnciensEtiquettes();
         canvas = surfaceView.getHolder().lockCanvas();
         if (canvas != null) {
             try {
                 canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR); // Efface le contenu précédent
-                for (Rect r : rects)
+                for (Rect r : rects) {
                     canvas.drawRect(r, paint);
+                    RelativeLayout relativeLayout = new RelativeLayout(this);
+                    int backgroundColor = Color.argb(127, 0, 255, 0); // 50% d'opacité (255 * 0.5)
+                    RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(
+                            r.width(),
+                            r.height()
+                    );
+                    relativeLayoutParams.leftMargin = r.left;
+                    relativeLayoutParams.topMargin = r.top;
+
+                    ((FrameLayout) surfaceView.getParent()).addView(relativeLayout, relativeLayoutParams);
+
+                    TextView textView = new TextView(this);
+                    textView.setText(trouverPieceParRect(r));
+                    textView.setAllCaps(true);
+                    textView.setTypeface(null, Typeface.BOLD);
+                    textView.setTextColor(Color.BLACK);
+
+                    relativeLayout.setBackgroundColor(backgroundColor);
+
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
+                    relativeLayout.addView(textView, params);
+                }
             } finally {
                 surfaceView.getHolder().unlockCanvasAndPost(canvas);
             }
             dessin = false;
+        }
+    }
+    private String trouverPieceParRect(Rect r){
+        String s = "";
+        for(Ouverture ouverture : ouvertures){
+            if(ouverture.getRect().equals(r)){
+                s = ouverture.getPieceArrivee();
+            }
+        }
+        return s;
+    }
+    private void enleverAnciensEtiquettes() {
+        FrameLayout layout = (FrameLayout) surfaceView.getParent();
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View child = layout.getChildAt(i);
+            if (child instanceof RelativeLayout) {
+                layout.removeView(child);
+            }
         }
     }
 
