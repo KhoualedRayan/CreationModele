@@ -60,16 +60,65 @@ public class PieceViewHolder extends RecyclerView.ViewHolder implements View.OnC
     private void supprimerPiece(){
         nom.setInputType(InputType.TYPE_CLASS_TEXT );
         Iterator<Piece> iterator = ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().iterator();
+        int position =-1;
 
         while (iterator.hasNext()) {
             Piece p = iterator.next();
+            position++;
             if (p.getNom().equals(nom.getText().toString())) {
                 iterator.remove(); // Utiliser l'itérateur pour supprimer l'élément de la liste en toute sécurité.
+                supprOuvertures(p);
                 break;
             }
         }
-        ((Activity) context).recreate();
+        ArrayList<Piece> updatedList = new ArrayList<>(ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList());
+        AdaptateurPiece newAdapter = new AdaptateurPiece(updatedList);
 
+        // Actualiser la RecyclerView avec le nouvel adaptateur
+        RecyclerView rc = ((Activity) context).findViewById(R.id.recylcerView_Pieces);
+        rc.setAdapter(newAdapter);
+
+    }
+    public void supprOuvertures(Piece p){
+        for(int i =0;i< ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().size();++i){
+            //NORD
+            if(!ModeleSingleton.getInstance().getModeleInstance().getPieces().get(i).getMurNord().getOuvertures().isEmpty()){
+                for(int j = 0; j <ModeleSingleton.getInstance().getModeleInstance().getPieces().get(i).getMurNord().getOuvertures().size();++j){
+                    if(ModeleSingleton.getInstance().getModeleInstance().getPieces().get(i).getMurNord().getOuvertures().get(j).getPieceArrivee().equals(p.getNom())){
+                        Log.i("Suppresion ouverture Nord: ",p.getNom() );
+                        ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().get(i).getMurNord().getOuvertures().remove(j);
+                    }
+                }
+            }
+
+            //EST
+            if(!ModeleSingleton.getInstance().getModeleInstance().getPieces().get(i).getMurEst().getOuvertures().isEmpty()){
+                for(int j = 0; j <ModeleSingleton.getInstance().getModeleInstance().getPieces().get(i).getMurEst().getOuvertures().size();++j){
+                    if(ModeleSingleton.getInstance().getModeleInstance().getPieces().get(i).getMurEst().getOuvertures().get(j).getPieceArrivee().equals(p.getNom())){
+                        Log.i("Suppresion ouverture Est: ",p.getNom() );
+                        ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().get(i).getMurEst().getOuvertures().remove(j);
+                    }
+                }
+            }
+            //OUEST
+            if(!ModeleSingleton.getInstance().getModeleInstance().getPieces().get(i).getMurOuest().getOuvertures().isEmpty()){
+                for(int j = 0; j <ModeleSingleton.getInstance().getModeleInstance().getPieces().get(i).getMurOuest().getOuvertures().size();++j){
+                    if(ModeleSingleton.getInstance().getModeleInstance().getPieces().get(i).getMurOuest().getOuvertures().get(j).getPieceArrivee().equals(p.getNom())){
+                        Log.i("Suppresion ouverture Ouest: ",p.getNom() );
+                        ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().get(i).getMurOuest().getOuvertures().remove(j);
+                    }
+                }
+            }
+            //SUD
+            if(!ModeleSingleton.getInstance().getModeleInstance().getPieces().get(i).getMurSud().getOuvertures().isEmpty()){
+                for(int j = 0; j <ModeleSingleton.getInstance().getModeleInstance().getPieces().get(i).getMurSud().getOuvertures().size();++j){
+                    if(ModeleSingleton.getInstance().getModeleInstance().getPieces().get(i).getMurSud().getOuvertures().get(j).getPieceArrivee().equals(p.getNom())){
+                        Log.i("Suppresion ouverture Sud: ",p.getNom() );
+                        ModeleSingleton.getInstance().getModeleInstance().getPieceArrayList().get(i).getMurSud().getOuvertures().remove(j);
+                    }
+                }
+            }
+        }
     }
     private void modifPiece(){
         Intent intent = new Intent(context, PieceActivity.class);
@@ -79,4 +128,5 @@ public class PieceViewHolder extends RecyclerView.ViewHolder implements View.OnC
         Log.i("Chargement Piece",nom.getText().toString());
 
     }
+
 }
