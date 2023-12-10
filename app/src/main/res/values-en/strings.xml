@@ -19,4 +19,5 @@
     <string name="Valider">Validate</string>
     <string name="SupprOuvertures">Delete all the openings</string>
     <string name="SupprLastOuverture">Delete the last opening</string>
+    <string name="tutoAcces">Click with 2 fingers on the image to create an opening</string>
 </resources>
