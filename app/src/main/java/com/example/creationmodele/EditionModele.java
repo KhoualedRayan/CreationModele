@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -84,4 +88,38 @@ public class EditionModele extends AppCompatActivity {
         rc.setAdapter(ad);
     }
 
+    public void save(View view) {
+        try {
+            // Créer un objet ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Convertir l'objet en format JSON
+            String json = objectMapper.writeValueAsString(ModeleSingleton.getInstance().getModeleInstance());
+
+            // Spécifier le nom du fichier
+            String nomFichier = ModeleSingleton.getInstance().getModeleInstance().getNom() + ".json";
+
+            // Obtenir le répertoire de stockage externe public
+            File repertoireExterne = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+
+            // Créer un dossier s'il n'existe pas encore
+            File dossierJson = new File(repertoireExterne, "DossierJSON");
+            if (!dossierJson.exists()) {
+                dossierJson.mkdirs();
+            }
+
+            // Créer un objet File pour le fichier de destination dans le dossier créé
+            File fichierDestination = new File(dossierJson, nomFichier);
+
+            // Écrire le JSON dans le fichier de destination
+            try (FileOutputStream fos = new FileOutputStream(fichierDestination)) {
+                fos.write(json.getBytes());
+            }
+
+            Log.i("MainACTIVITY : ", "Sauvegarde en JSON réussie dans : " + fichierDestination.getAbsolutePath());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

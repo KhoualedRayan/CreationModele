@@ -20,12 +20,12 @@
 
     <Button
         android:id="@+id/button_ajouter_piece"
-        android:layout_width="198dp"
+        android:layout_width="205dp"
         android:layout_height="48dp"
+        android:onClick="ajouterPiece"
         android:text="@string/AjouterPiece"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="ajouterPiece"
         app:layout_constraintHorizontal_bias="0.014"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -45,4 +45,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="205dp"
+        android:layout_height="48dp"
+        android:backgroundTint="@android:color/holo_red_light"
+        android:onClick="save"
+        android:text="@string/SauvergarderModele"
+        android:textColor="#212121"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.004"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.121"
+        tools:ignore="TextSizeCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

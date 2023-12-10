@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:textAlignment="center"
     tools:context=".OuvertureActivity">
 
     <FrameLayout
         android:id="@+id/frame_layout"
-        android:layout_width="349dp"
-        android:layout_height="449dp"
+        android:layout_width="match_parent"
+        android:layout_height="525dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,8 +43,10 @@
         android:text="@string/Valider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frame_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/frame_layout"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button_derniereOuverture"
@@ -51,8 +54,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
         android:layout_marginEnd="85dp"
-        android:onClick="supprDerniereOuveture"
         android:backgroundTint="@android:color/holo_orange_dark"
+        android:onClick="supprDerniereOuveture"
         android:text="@string/SupprLastOuverture"
         android:textColor="#4E342E"
         app:layout_constraintBottom_toTopOf="@+id/button_supprOuvertures"
@@ -67,10 +70,22 @@
         android:layout_marginStart="79dp"
         android:layout_marginEnd="79dp"
         android:backgroundTint="@color/design_default_color_error"
-        android:text="@string/SupprOuvertures"
         android:onClick="supprOuvertures"
+        android:text="@string/SupprOuvertures"
         app:layout_constraintBottom_toTopOf="@+id/frame_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_derniereOuverture" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/tutoAcces"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frame_layout"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

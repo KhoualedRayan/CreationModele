@@ -10,6 +10,7 @@ import android.view.View;
 public class AccelVectorView extends View {
     private Paint paint;
     private Paint paint2;
+    private boolean accelBool = false;
     private float[] orientation,accel;
     public AccelVectorView(Context context) {
         super(context);
@@ -39,7 +40,9 @@ public class AccelVectorView extends View {
         this.orientation = orientation;
         invalidate();
     }
-
+    public void setAccelVisibility(boolean condition){
+        accelBool= condition;
+    }
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -49,16 +52,15 @@ public class AccelVectorView extends View {
         float y = (float) -Math.cos(orientation[0]);
         float centreX = (getWidth() / 2) ;
         float centreY = (float) (getHeight() / 2.5);
-
-        canvas.drawLine(centreX, centreY, (x*80+centreX), (y*80+centreY), paint2);
+        if(!accelBool)
+            canvas.drawLine(centreX, centreY, (x*80+centreX), (y*80+centreY), paint2);
 
         //accelerometre
         float startX = this.getWidth() / 2;
-        float startY = this.getHeight() - getHeight() /4;
+        float startY = (float) (this.getHeight() - getHeight() /1.75);
         float stopX = startX - accel[0] * 50;
         float stopY = startY + accel[1] *50;
-
-        //canvas.drawLine(startX, startY, stopX, stopY, paint);
+        if(accelBool)   canvas.drawLine(startX, startY, stopX, stopY, paint);
 
     }
 

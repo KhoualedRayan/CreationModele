@@ -10,7 +10,7 @@
     <string name="ModeleActuel">"Le modèle actuel est : "</string>
     <string name="SauvergarderModele">Sauvegarder un modèle</string>
     <string name="Nom">Nom</string>
-    <string name="TexteVide" />
+    <string name="TexteVide" translatable="false" />
     <string name="AjouterPiece">Ajouter une pièce</string>
     <string name="Nord">Nord\n</string>
     <string name="Est">Est\n</string>
@@ -19,5 +19,6 @@
     <string name="Valider">Valider</string>
     <string name="SupprOuvertures">Supprimer toutes les ouvertures</string>
     <string name="SupprLastOuverture">Supprimer la dernière ouverture</string>
+    <string name="tutoAcces">Appuyez avec 2 doigts sur l\'image pour faire un accès</string>
 
 </resources>

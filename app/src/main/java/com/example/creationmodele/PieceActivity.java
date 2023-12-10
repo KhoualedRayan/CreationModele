@@ -34,6 +34,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import habitation.Mur;
 import habitation.Orientation;
@@ -137,12 +141,7 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
                 .setTitle("Nouveau Mur")
                 .setMessage("Voulez-vous créer un nouveau mur ou l'éditer ?")
                 .setNegativeButton("Créer", (dialog, which) -> {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        Toast.makeText(PieceActivity.this, "Prendre une photo", Toast.LENGTH_SHORT).show();
-                        startActivityForResult(intent, requestCode);
-                        setResult(RESULT_OK, intent);
-                    }
+                    photo(requestCode);
                 })
                 .setPositiveButton("Editer", (dialog, which) -> {
                     edit(requestCode);
@@ -150,6 +149,41 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
 
+    }
+    public void photo(int requestCode){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Timer time =new Timer();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.i("LongActivity","Fin de tache");
+                                Toast.makeText(PieceActivity.this, "Fin de tache", Toast.LENGTH_SHORT).show() ;
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE) ;
+                                accelVectorView.setAccelVisibility(false);
+                                switchOnClick(findViewById(R.id.capteur_switch));
+                                if (intent.resolveActivity(getPackageManager())!=null) {
+                                    startActivityForResult(intent,requestCode);
+                                    setResult(RESULT_OK,intent);
+                                }
+                            }
+                        });
+                    }
+                };
+                time.schedule(task,5000);
+            }
+        };
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        service.execute(runnable);
+        Switch s = findViewById(R.id.capteur_switch);
+        accelVectorView.setAccelVisibility(true);
+        if(!s.isChecked()) {
+            switchOnClick(findViewById(R.id.capteur_switch));
+        }
     }
     public void edit(int requestCode){
         Intent intent = new Intent(this,OuvertureActivity.class);
@@ -297,7 +331,6 @@ public class PieceActivity extends AppCompatActivity implements SensorEventListe
                     break;
             }
             File chemin = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "DossierJSON");
-            File dossier = new File(chemin, ModeleSingleton.getInstance().getModeleInstance().getNom());
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             imageBitMap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             mur.setBytes(stream.toByteArray());
