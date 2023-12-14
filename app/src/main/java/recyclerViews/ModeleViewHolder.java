@@ -1,7 +1,10 @@
 package recyclerViews;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.creationmodele.EditionModele;
+import com.example.creationmodele.PieceActivity;
 import com.example.creationmodele.R;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,9 +27,10 @@ import outils.ModeleSingleton;
 
 public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView nom;
-
-    public ModeleViewHolder(View itemView) {
+    private Context context;
+    public ModeleViewHolder(View itemView,Context context) {
         super(itemView);
+        this.context = context;
         nom = itemView.findViewById(R.id.modele_nom);
         itemView.setOnClickListener(this);
     }
@@ -76,6 +82,10 @@ public class ModeleViewHolder extends RecyclerView.ViewHolder implements View.On
             // Lire le fichier JSON et le convertir en objet de la classe MaClasse
             Modele modeleCharger = objectMapper.readValue(new File(chemin), Modele.class);
             ModeleSingleton.getInstance().getModeleInstance().remplacementModele(modeleCharger);
+            Intent intent = new Intent(context, EditionModele.class);
+            ((Activity) context).finish();
+            ((Activity) context).startActivity(intent);
+
 
         } catch (IOException e) {
             e.printStackTrace();

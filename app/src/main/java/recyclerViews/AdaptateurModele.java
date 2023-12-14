@@ -27,7 +27,7 @@ public class AdaptateurModele extends RecyclerView.Adapter<ModeleViewHolder> {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.modele_item, parent, false);
-        return new ModeleViewHolder(view);
+        return new ModeleViewHolder(view,context);
     }
 
     @Override
